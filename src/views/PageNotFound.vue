@@ -1,5 +1,5 @@
 <template>
   <div>
-    home
+    404
   </div>
 </template>
