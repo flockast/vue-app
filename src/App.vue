@@ -1,10 +1,16 @@
 <template>
-  <div>
-    <Header />
-    <Sidebar />
-    <div class="btn3333">hello</div>
-    <br />
-    <router-view />
+  <div class="container">
+    <div class="grid">
+      <div class="cell cell--12">
+        <Header />
+      </div>
+      <div class="cell cell--12 cell--md-4">
+        <Sidebar />
+      </div>
+      <div class="cell cell--12 cell--md-8">
+        <router-view></router-view>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -23,14 +29,6 @@ export default {
 
 <style lang="scss">
 .btn {
-  &3333 {
-    display: inline-block;
-    background: rebeccapurple;
-    color: white;
-    @apply font-bold;
-    @apply py-2;
-    @apply px-4;
-    @apply rounded;
-  }
+  color: red;
 }
 </style>
