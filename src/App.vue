@@ -1,15 +1,13 @@
 <template>
-  <div class="container">
-    <div class="grid">
-      <div class="cell cell--12">
-        <Header />
-      </div>
-      <div class="cell cell--12 cell--md-4">
-        <Sidebar />
-      </div>
-      <div class="cell cell--12 cell--md-8">
-        <router-view></router-view>
-      </div>
+  <div class="wrapper">
+    <div class="wrapper__header">
+      <Header />
+    </div>
+    <div class="wrapper__sidebar">
+      <Sidebar />
+    </div>
+    <div class="wrapper__content">
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -27,8 +25,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.btn {
-  color: red;
-}
-</style>
+<style lang="scss"></style>
