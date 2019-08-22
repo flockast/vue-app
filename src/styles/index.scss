@@ -1,6 +1,12 @@
+/* abstracts */
 @import "abstracts/variables";
 @import "abstracts/mixins";
 
+/* vendors */
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~bootstrap-vue/src/index.scss";
+
+/* base */
 @import "base/reset";
 @import "base/common";
 @import "base/grid";
