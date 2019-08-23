@@ -1,8 +1,8 @@
-const autoprefixer = require("autoprefixer");
-const purgecss = require("@fullhuman/postcss-purgecss");
-const cssMqpacker = require("css-mqpacker");
+const autoprefixer = require('autoprefixer')
+const purgecss = require('@fullhuman/postcss-purgecss')
+const cssMqpacker = require('css-mqpacker')
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
   plugins: [
@@ -10,12 +10,12 @@ module.exports = {
       add: true,
       grid: true
     }),
-    //Only add purgecss, css-mqpacker in production
+    // Only add purgecss, css-mqpacker in production
     !isDev
       ? purgecss({
-          content: ["./src/**/*.html", "./src/**/*.vue"]
-        })
-      : "",
-    !isDev ? cssMqpacker() : ""
+        content: ['./src/**/*.html', './src/**/*.vue']
+      })
+      : '',
+    !isDev ? cssMqpacker() : ''
   ]
-};
+}

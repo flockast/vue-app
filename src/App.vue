@@ -3,26 +3,47 @@
     <div class="wrapper__header">
       <Header />
     </div>
-    <div class="wrapper__sidebar">
-      <Sidebar />
+    <div class="wrapper-content">
+      <div class="wrapper-content__sidebar">
+        <Sidebar />
+      </div>
+      <div class="wrapper-content__content">
+        <router-view />
+      </div>
     </div>
-    <div class="wrapper__content">
-      <router-view></router-view>
-    </div>
+    <Counter />
   </div>
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Sidebar from "@/components/Sidebar.vue";
+import Header from '@/components/Header.vue'
+import Sidebar from '@/components/Sidebar.vue'
+import Counter from '@/components/Counter.vue'
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
     Header,
-    Sidebar
+    Sidebar,
+    Counter
   }
-};
+}
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+  .wrapper {
+    &__header {
+
+    }
+  }
+  .wrapper-content {
+    display: flex;
+    flex: 1 1 auto;
+    &__sidebar {
+
+    }
+    &__content {
+
+    }
+  }
+</style>

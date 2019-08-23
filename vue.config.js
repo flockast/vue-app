@@ -1,18 +1,18 @@
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
   pages: {
     index: {
-      entry: "src/index.js",
-      title: "CMS"
+      entry: 'src/index.js',
+      title: 'CMS'
     }
   },
   chainWebpack: config => {
     // for remove chunk-vendors
-    config.optimization.delete("splitChunks");
+    config.optimization.delete('splitChunks')
   },
   configureWebpack: {
-    devtool: isDev ? "inline-source-map" : false
+    devtool: isDev ? 'inline-source-map' : false
   },
   css: {
     sourceMap: isDev,
@@ -25,4 +25,4 @@ module.exports = {
       }
     }
   }
-};
+}
