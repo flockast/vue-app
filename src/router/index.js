@@ -1,11 +1,11 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 
-import Home from './views/Home.vue'
-import Assets from './views/Assets.vue'
-import PageNotFound from './views/PageNotFound.vue'
+import Home from './views/Home.vue';
+import Assets from './views/Assets.vue';
+import PageNotFound from './views/PageNotFound.vue';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -27,4 +27,4 @@ export default new Router({
       component: PageNotFound
     }
   ]
-})
+});

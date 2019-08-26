@@ -1,22 +1,28 @@
 <template>
   <div>
-    <div>{{ counter }}</div>
-    <button @click="increment">up</button>
-
+    <div>{{ count }}</div>
+    <div>
+      <button @click="up">up</button>
+      <button @click="down">down</button>
+    </div>
+    <div>
+      sign of counter: {{ sign }}
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 export default {
   computed: {
-  	counter () {
-      return this.$store.state.count
+    ...mapGetters('counter', ['count', 'is_positive']),
+    sign () {
+      if (this.is_positive === 0) return 'zero';
+      return this.is_positive ? 'positive' : 'negative';
     }
   },
   methods: {
-    increment (event) {
-    	this.$store.commit('increment')
-    }
+    ...mapActions('counter', ['up', 'down'])
   }
-}
+};
 </script>

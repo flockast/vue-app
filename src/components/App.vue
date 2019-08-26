@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
-import Sidebar from '@/components/Sidebar.vue'
-import Counter from '@/components/Counter.vue'
+import Header from '@/components/Header.vue';
+import Sidebar from '@/components/Sidebar.vue';
+import Counter from '@/components/Counter.vue';
 
 export default {
   name: 'app',
@@ -27,7 +27,7 @@ export default {
     Sidebar,
     Counter
   }
-}
+};
 </script>
 
 <style lang="scss">

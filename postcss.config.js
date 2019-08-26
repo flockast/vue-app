@@ -1,8 +1,8 @@
-const autoprefixer = require('autoprefixer')
-const purgecss = require('@fullhuman/postcss-purgecss')
-const cssMqpacker = require('css-mqpacker')
+const autoprefixer = require('autoprefixer');
+const purgecss = require('@fullhuman/postcss-purgecss');
+const cssMqpacker = require('css-mqpacker');
 
-const isDev = process.env.NODE_ENV === 'development'
+const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
   plugins: [
@@ -18,4 +18,4 @@ module.exports = {
       : '',
     !isDev ? cssMqpacker() : ''
   ]
-}
+};

@@ -12,13 +12,13 @@
 </template>
 
 <script>
-import GameAccount from '@/components/GameAccount'
+import GameAccount from '@/components/GameAccount';
 
 export default {
   components: {
     GameAccount
   }
-}
+};
 </script>
 
 <style lang="scss">

@@ -1,4 +1,4 @@
-const isDev = process.env.NODE_ENV === 'development'
+const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
   pages: {
@@ -9,7 +9,7 @@ module.exports = {
   },
   chainWebpack: config => {
     // for remove chunk-vendors
-    config.optimization.delete('splitChunks')
+    config.optimization.delete('splitChunks');
   },
   configureWebpack: {
     devtool: isDev ? 'inline-source-map' : false
@@ -25,4 +25,4 @@ module.exports = {
       }
     }
   }
-}
+};
