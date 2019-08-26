@@ -12,15 +12,15 @@ module.exports = {
     config.optimization.delete('splitChunks');
   },
   configureWebpack: {
-    devtool: isDev ? 'inline-source-map' : false
+    devtool: isDev ? 'eval-source-map' : false
   },
   css: {
     sourceMap: isDev,
     loaderOptions: {
       sass: {
         data: `
-          @import "@/styles/abstracts/_variables.scss";
-          @import "@/styles/abstracts/_mixins.scss";
+          @import "@/assets/styles/abstracts/_variables.scss";
+          @import "@/assets/styles/abstracts/_mixins.scss";
         `
       }
     }

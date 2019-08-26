@@ -4,19 +4,26 @@
       <div class="header__game">
         <GameAccount />
       </div>
-      <div class="header__menu">2</div>
-      <div class="header__search">3</div>
-      <div class="header__user">4</div>
+      <div class="header__menu">
+        <Menu />
+      </div>
+      <div class="header__search">
+        <Search />
+      </div>
     </div>
   </header>
 </template>
 
 <script>
-import GameAccount from '@/components/GameAccount';
+import GameAccount from './header/GameAccount';
+import Menu from './header/Menu';
+import Search from './header/Search';
 
 export default {
   components: {
-    GameAccount
+    GameAccount,
+    Menu,
+    Search
   }
 };
 </script>
@@ -24,7 +31,6 @@ export default {
 <style lang="scss">
   .header {
     height: 5rem;
-    padding: .4rem 0;
     background: $color-main;
     color: $color-font-light;
     &__container {
@@ -32,6 +38,9 @@ export default {
       display: flex;
       justify-content: space-between;
       height: 100%;
+    }
+    &__menu {
+      flex: 1;
     }
   }
 </style>

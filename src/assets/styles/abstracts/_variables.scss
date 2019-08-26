@@ -5,7 +5,7 @@ $line-height: 1.125;
 
 /* colors */
 $color-main: #563d7c;
-$color-main-dark: #412d5f;
+$color-main-dark: darken($color-main, 10%);
 $color-font-dark: #2e2e2e;
 $color-font-grey: #707070;
 $color-font-light: #d1d1f0;
