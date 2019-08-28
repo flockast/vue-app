@@ -1,0 +1,19 @@
+.input {
+  display: inline-block;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  padding: .6rem 1.5rem;
+  font-size: 1.6rem;
+  appearance: none;
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px $color-main-light;
+    border-color: $color-main-light;
+  }
+  &--full {
+    width: 100%;
+  }
+  &--serach {
+
+  }
+}

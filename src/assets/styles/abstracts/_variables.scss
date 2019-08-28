@@ -6,12 +6,15 @@ $line-height: 1.125;
 /* colors */
 $color-main: #563d7c;
 $color-main-dark: darken($color-main, 10%);
+$color-main-light: lighten($color-main, 10%);
 $color-font-dark: #2e2e2e;
 $color-font-grey: #707070;
 $color-font-light: #d1d1f0;
+$color-border: #dfdfdf;
 
 /* shapes */
 $border-radius: .4rem;
+$header-height: 5rem;
 
 /* grid */
 $columns: 12;

@@ -1,21 +1,26 @@
 const autoprefixer = require('autoprefixer');
-const purgecss = require('@fullhuman/postcss-purgecss');
-const cssMqpacker = require('css-mqpacker');
+const cssMqPacker = require('css-mqpacker');
+const purgeCss = require('@fullhuman/postcss-purgecss')({
 
-const isDev = process.env.NODE_ENV === 'development';
+  content: [
+    './public/*.html',
+    './src/**/*.vue'
+  ],
+
+  defaultExtractor: (content) => {
+    const contentWithoutStyleBlocks = content.replace(/<style[^]+?<\/style>/gi, '');
+    return contentWithoutStyleBlocks.match(/[A-Za-z0-9-_/:]*[A-Za-z0-9-_/]+/g) || [];
+  },
+
+  whitelistPatterns: [ /-(leave|enter|appear)(|-(to|from|active))$/, /^(?!cursor-move).+-move$/, /^router-link(|-exact)-active$/ ]
+
+});
 
 module.exports = {
   plugins: [
-    autoprefixer({
-      add: true,
-      grid: true
-    }),
-    // Only add purgecss, css-mqpacker in production
-    !isDev
-      ? purgecss({
-        content: ['./src/**/*.html', './src/**/*.vue']
-      })
-      : '',
-    !isDev ? cssMqpacker() : ''
+    autoprefixer,
+    ...process.env.NODE_ENV === 'production'
+      ? [purgeCss, cssMqPacker]
+      : []
   ]
 };

@@ -11,15 +11,18 @@
     height: 100%;
     &__input {
       display: inline-block;
+      width: 20rem;
       border: none;
       border-radius: $border-radius;
-      padding: .5rem 1.5rem;
+      padding: .8rem 1.5rem;
       appearance: none;
       font-size: 1.4rem;
-      background: $color-main-dark;
+      background: $color-main-light;
+      transition: width .2s ease-in-out;
       &:focus {
         outline: none;
         background: white;
+        width: 32rem;
       }
      }
   }

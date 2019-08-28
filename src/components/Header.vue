@@ -30,7 +30,11 @@ export default {
 
 <style lang="scss">
   .header {
-    height: 5rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $header-height;
     background: $color-main;
     color: $color-font-light;
     &__container {

@@ -8,24 +8,23 @@
         <Sidebar />
       </div>
       <div class="wrapper-content__content">
-        <router-view />
+        <PageContent />
       </div>
     </div>
-    <Counter />
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
-import Counter from '@/components/Counter.vue';
+import PageContent from '@/components/PageContent.vue';
 
 export default {
   name: 'app',
   components: {
     Header,
     Sidebar,
-    Counter
+    PageContent
   }
 };
 </script>
@@ -33,7 +32,7 @@ export default {
 <style lang="scss">
   .wrapper {
     &__header {
-
+      height: $header-height;
     }
   }
   .wrapper-content {
