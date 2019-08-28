@@ -1,17 +1,19 @@
 <template>
-  <header class="header">
-    <div class="header__container">
-      <div class="header__game">
-        <GameAccount />
+  <div class="header-wrapper">
+    <header class="header">
+      <div class="header__container">
+        <div class="header__game">
+          <GameAccount />
+        </div>
+        <div class="header__menu">
+          <Menu />
+        </div>
+        <div class="header__search">
+          <Search />
+        </div>
       </div>
-      <div class="header__menu">
-        <Menu />
-      </div>
-      <div class="header__search">
-        <Search />
-      </div>
-    </div>
-  </header>
+    </header>
+  </div>
 </template>
 
 <script>
@@ -29,6 +31,9 @@ export default {
 </script>
 
 <style lang="scss">
+  .header-wrapper {
+    height: $header-height;
+  }
   .header {
     position: fixed;
     top: 0;

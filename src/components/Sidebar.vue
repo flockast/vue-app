@@ -43,11 +43,12 @@ export default {
     flex-direction: column;
     width: inherit;
     height: calc(100vh - 5rem);
-    background: white;
     border-right: 1px solid $color-border;
+    background: white;
+    overflow: hidden;
   }
   &__search {
-    padding: 1.5rem;
+    padding: $fields;
     border-bottom: 1px solid $color-border;
   }
   &__menu {
@@ -63,7 +64,7 @@ export default {
       a {
         position: relative;
         display: block;
-        padding: 1rem 1.5rem;
+        padding: 1rem $fields;
         font-size: 1.6rem;
         text-decoration: none;
         color: $color-font-grey;

@@ -1,13 +1,11 @@
 <template>
   <div class="wrapper">
-    <div class="wrapper__header">
-      <Header />
-    </div>
-    <div class="wrapper-content">
-      <div class="wrapper-content__sidebar">
+    <Header />
+    <div class="content-wrapper">
+      <div class="content-wrapper__sidebar">
         <Sidebar />
       </div>
-      <div class="wrapper-content__content">
+      <div class="content-wrapper__page">
         <PageContent />
       </div>
     </div>
@@ -30,19 +28,14 @@ export default {
 </script>
 
 <style lang="scss">
-  .wrapper {
-    &__header {
-      height: $header-height;
-    }
-  }
-  .wrapper-content {
+  .content-wrapper {
     display: flex;
     flex: 1 1 auto;
     &__sidebar {
 
     }
-    &__content {
-
+    &__page {
+      flex: 1;
     }
   }
 </style>

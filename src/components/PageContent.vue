@@ -1,9 +1,13 @@
 <template>
   <div class="content">
-    <Breadcrumbs />
-    <transition name="fade" mode="out-in">
-      <router-view />
-    </transition>
+    <div class="content__breadcrumbs">
+      <Breadcrumbs />
+    </div>
+    <div class="content__page">
+      <transition name="fade" mode="out-in">
+        <router-view />
+      </transition>
+    </div>
   </div>
 </template>
 
