@@ -2,6 +2,11 @@
 @import "abstracts/variables";
 @import "abstracts/mixins";
 
+/* vendors */
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+
 /* base */
 @import "base/reset";
 @import "base/common";
@@ -9,3 +14,4 @@
 
 /* utils */
 @import "utils/input";
+@import "utils/table";
