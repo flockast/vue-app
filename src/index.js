@@ -1,13 +1,13 @@
 import './assets/styles/index.scss';
 
+import axios from 'axios';
+import { baseURL } from '../cms.config.js';
 import Vue from 'vue';
-import Fragment from 'vue-fragment';
 import router from './router';
 import store from './store';
 import App from './components/App.vue';
 
-Vue.use(Fragment.Plugin);
-
+axios.defaults.baseURL = baseURL;
 Vue.config.productionTip = false;
 
 new Vue({

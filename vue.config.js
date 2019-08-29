@@ -24,5 +24,9 @@ module.exports = {
         `
       }
     }
+  },
+  devServer: {
+    host: 'cms.local',
+    port: 8081
   }
 };

@@ -9,12 +9,10 @@
           <th></th>
         </tr>
       </thead>
-      <tbody>
-        <Tr />
-        <Tr />
-        <Tr />
-        <Tr />
-      </tbody>
+      <Tr />
+      <Tr />
+      <Tr />
+      <Tr />
     </table>
   </div>
 </template>

@@ -17,12 +17,19 @@ import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
 import PageContent from '@/components/PageContent.vue';
 
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'app',
   components: {
     Header,
     Sidebar,
     PageContent
+  },
+  computed: mapGetters('template', ['all']),
+  methods: mapActions('template', ['getAll']),
+  created () {
+    this.getAll();
   }
 };
 </script>

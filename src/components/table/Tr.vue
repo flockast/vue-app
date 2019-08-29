@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <tbody>
     <tr :class="{'is-opened': isOpen}">
       <td>3214</td>
       <td>Arnold Schwarzenegger</td>
@@ -28,67 +28,68 @@
       </td>
     </tr>
     <tr v-if="isOpen" class="sub">
-      <td colspan="4">
-        <div class="grid">
-          <div class="cell cell--4">
-            <div class="table-wrapper">
-              <table class="table">
-                <thead>
-                <tr>
-                  <th>id</th>
-                  <th>3214</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>hidden</td>
-                  <td><input type="checkbox"></td>
-                </tr>
-                <tr>
-                  <td>name</td>
-                  <td><input type="text" class="input input--full" value="Arnold Schwarzenegger"></td>
-                </tr>
-                <tr>
-                  <td>date</td>
-                  <td><input type="text" class="input input--full" value="today"></td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="cell cell--8">
-            <div class="table-wrapper">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th colspan="3">films</th>
-                  </tr>
-                  <tr>
-                    <th>id</th>
-                    <th>hidden</th>
-                    <th>title</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>3210</td>
-                    <td><input type="checkbox"></td>
-                    <td><input type="text" class="input input--full" value="batman"></td>
-                  </tr>
-                  <tr>
-                    <td>3211</td>
-                    <td><input type="checkbox"></td>
-                    <td><input type="text" class="input input--full" value="robin"></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+    <td colspan="4">
+        <transition name="fade">
+          <div v-if="isOpen" class="grid">
+        <div class="cell cell--4">
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>id</th>
+                <th>3214</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>hidden</td>
+                <td><input type="checkbox"></td>
+              </tr>
+              <tr>
+                <td>name</td>
+                <td><input type="text" class="input input--full" value="Arnold Schwarzenegger"></td>
+              </tr>
+              <tr>
+                <td>date</td>
+                <td><input type="text" class="input input--full" value="today"></td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-      </td>
-    </tr>
-
-  </fragment>
+        <div class="cell cell--8">
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th colspan="3">films</th>
+                </tr>
+                <tr>
+                  <th>id</th>
+                  <th>hidden</th>
+                  <th>title</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>3210</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="text" class="input input--full" value="batman"></td>
+                </tr>
+                <tr>
+                  <td>3211</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="text" class="input input--full" value="robin"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+        </transition>
+    </td>
+  </tr>
+  </tbody>
 </template>
 
 <script>
