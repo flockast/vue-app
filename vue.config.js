@@ -18,15 +18,14 @@ module.exports = {
     sourceMap: isDev,
     loaderOptions: {
       sass: {
-        data: `
-          @import "@/assets/styles/abstracts/_variables.scss";
-          @import "@/assets/styles/abstracts/_mixins.scss";
-        `
+        data:
+          `@import "@/assets/styles/abstracts/_variables.scss";
+           @import "@/assets/styles/abstracts/_mixins.scss";
+          `
       }
     }
   },
   devServer: {
-    host: 'cms.local',
-    port: 8081
+    host: 'cms.local'
   }
 };

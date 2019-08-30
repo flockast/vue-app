@@ -1,5 +1,8 @@
 <template>
-  <Table />
+  <div>
+    <span>{{ $route.params.id }}</span>
+    <Table />
+  </div>
 </template>
 
 <script>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <input type="text" class="input input--search">
     <Counter />
   </div>
 </template>

@@ -1,4 +1,4 @@
-import templates from '@/api/template';
+import Template from '../../api/Template';
 
 const state = {
   templates: {}
@@ -10,13 +10,13 @@ const mutations = {
 
 const actions = {
   async getAll ({ commit }) {
-    const response = await templates.getAll();
+    const response = await Template.getAll();
     commit('setAll', response);
   }
 };
 
 const getters = {
-  all: state => state.templates
+  templates: state => state.templates
 };
 
 export default {

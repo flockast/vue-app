@@ -8,7 +8,9 @@
         <nav class="sidebar-menu">
           <ul class="sidebar-menu__list">
             <li><router-link :to="{name: 'home'}" :exact="true">Home</router-link></li>
-            <li><router-link :to="{name: 'assets'}" :exact="true">Assets</router-link></li>
+            <li v-for="(template, index) in templates" :key="index">
+              <router-link :to="{name: 'asset', params: {id: template.id}}" :exact="true">{{ template.id }}</router-link>
+            </li>
           </ul>
         </nav>
       </div>
@@ -17,18 +19,12 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 export default {
-  data () {
-    let items = [];
-    for (let i = 1; i <= 10; i++) {
-      items.push({
-        id: i
-      });
-    }
-    return {
-      selected: null,
-      items
-    };
+  computed: mapGetters('template', ['templates']),
+  methods: mapActions('template', ['getAll']),
+  created () {
+    this.getAll();
   }
 };
 </script>
