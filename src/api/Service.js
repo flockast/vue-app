@@ -5,7 +5,10 @@ import { baseURL } from '../../cms.config';
 class Service {
   constructor () {
     let service = axios.create({
-      baseURL: baseURL
+      baseURL: baseURL,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
     });
     service.interceptors.request.use((config) => {
       const token = store.getters['user/token'];
