@@ -29,8 +29,7 @@
     </tr>
     <tr v-if="isOpen" class="sub">
     <td colspan="4">
-        <transition name="fade">
-          <div v-if="isOpen" class="grid">
+      <div class="grid">
         <div class="cell cell--4">
           <div class="table-wrapper">
             <table class="table">
@@ -86,7 +85,6 @@
           </div>
         </div>
       </div>
-        </transition>
     </td>
   </tr>
   </tbody>
