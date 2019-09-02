@@ -2,33 +2,40 @@
   <aside class="sidebar-wrapper" :class="{'is-collapsed': isCollapsed}">
     <div class="sidebar">
       <div v-if="!isCollapsed" class="sidebar__search">
-        <input type="text" class="input input--full input--search">
+        <input type="text" class="input input--full input--search" v-model="search">
       </div>
       <div class="sidebar__menu">
         <nav class="sidebar-menu">
           <ul class="sidebar-menu-list">
-            <li class="sidebar-menu-list__item">
-              <router-link class="sidebar-menu-list-item" :to="{name: 'home'}" :exact="true">
-                <span class="sidebar-menu-list-item__icon"><i class="fas fa-home"></i></span>
-                <span class="sidebar-menu-list-item__text">Home</span>
+            <li class="sidebar-menu-list__item" v-for="(item, index) in items" :key="index">
+              <router-link v-if="!item.children.length"
+                           class="sidebar-menu-list-item"
+                           :to="item.link ? {name: item.link} : {name: 'home'}" :exact="true">
+                <span class="sidebar-menu-list-item__icon">
+                  <i v-if="item.icon" :class="item.icon"></i>
+                  <i v-else class="fas fa-th-large"></i>
+                </span>
+                <span class="sidebar-menu-list-item__text">{{ item.title }}</span>
               </router-link>
-            </li>
-            <li class="sidebar-menu-list__item">
-              <span class="sidebar-menu-list-item"
-                    @click="toggleTemplates"
-                    :class="{'is-opened': showTemplates}">
-                <span class="sidebar-menu-list-item__icon"><i class="fas fa-th-large"></i></span>
-                <span class="sidebar-menu-list-item__text">Templates</span>
+              <span v-else
+                    class="sidebar-menu-list-item"
+                    :class="{'is-opened': !item.collapsed}"
+                    @click="item.collapsed = !item.collapsed">
+                <span class="sidebar-menu-list-item__icon">
+                  <i v-if="item.icon" :class="item.icon"></i>
+                  <i v-else class="fas fa-th-large"></i>
+                </span>
+                <span class="sidebar-menu-list-item__text">{{ item.title }}</span>
                 <span class="sidebar-menu-list-item__toggle" v-if="!isCollapsed">
                   <i class="fas fa-chevron-up"></i>
                 </span>
               </span>
-              <ul class="sidebar-menu-list" v-if="showTemplates && !isCollapsed">
-                <li class="sidebar-menu-list__item" v-for="(template, index) in templates" :key="index">
+              <ul class="sidebar-menu-list" v-if="!item.collapsed && !isCollapsed">
+                <li class="sidebar-menu-list__item" v-for="(child, index) in item.children" :key="index">
                   <router-link class="sidebar-menu-list-item"
-                               :to="{name: 'asset', params: {id: template.id}}"
+                               :to="item.link ? {name: item.link, params: {id: child.id}} : {name: 'home'}"
                                :exact="true">
-                    {{ template.id }}
+                    <span class="sidebar-menu-list-item__text">{{ child.title }}</span>
                   </router-link>
                 </li>
               </ul>
@@ -53,17 +60,37 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
   data () {
     return {
-      isCollapsed: false,
-      showTemplates: false
+      search: '',
+      list: [
+        {
+          id: 'home',
+          title: 'Домой',
+          icon: 'fas fa-home',
+          link: 'home'
+        },
+        {
+          id: 'templates',
+          title: 'Шаблоны',
+          icon: 'fas fa-th-large',
+          link: 'asset',
+          collapsed: true
+        }
+      ],
+      isCollapsed: false
     };
   },
-  computed: mapGetters('template', ['templates']),
+  computed: {
+    ...mapGetters('template', ['templates']),
+    items () {
+      return this.list.map(item => {
+        item.children = item.id === 'templates' ? this.templates : [];
+        return item;
+      });
+    }
+  },
   methods: {
     toggleCollapse () {
       this.isCollapsed = !this.isCollapsed;
-    },
-    toggleTemplates () {
-      this.showTemplates = !this.showTemplates;
     },
     ...mapActions('template', ['getAll'])
   },
@@ -111,6 +138,7 @@ export default {
   &__item {
     & > .sidebar-menu-list .sidebar-menu-list-item {
       padding-left: 50px;
+      background: $color-grey-lighter;
     }
   }
 }
@@ -125,7 +153,7 @@ export default {
   &:before {
     content: '';
     position: absolute;
-    z-index: -1;
+    z-index: 1;
     top: 0;
     bottom: 0;
     left: 0;
@@ -148,12 +176,17 @@ export default {
     }
   }
   &.is-opened {
+    background: $color-grey-lighter;
     .sidebar-menu-list-item__toggle {
       transform: rotate(180deg);
     }
   }
   &__icon {
     margin-right: 20px;
+  }
+  &__text {
+    position: relative;
+    z-index: 2;
   }
   &__toggle {
     position: absolute;

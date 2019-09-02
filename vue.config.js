@@ -12,7 +12,7 @@ module.exports = {
     config.optimization.delete('splitChunks');
   },
   configureWebpack: {
-    devtool: isDev ? 'source-map' : false
+    devtool: isDev ? 'eval-source-map' : false
   },
   css: {
     sourceMap: isDev,
