@@ -1,4 +1,5 @@
 import axios from 'axios';
+import qs from 'querystring';
 import store from '../store';
 import { baseURL } from '../../cms.config';
 
@@ -46,7 +47,7 @@ class Service {
       method: 'POST',
       url: path,
       responseType: 'json',
-      data: payload
+      data: qs.stringify(payload)
     }).then((response) => callback(response.status, response.data));
   }
 }

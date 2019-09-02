@@ -86,7 +86,7 @@
         </div>
       </div>
     </td>
-  </tr>
+</tr>
   </tbody>
 </template>
 

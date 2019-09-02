@@ -24,8 +24,5 @@ module.exports = {
           `
       }
     }
-  },
-  devServer: {
-    host: 'cms.local'
   }
 };
