@@ -7,8 +7,8 @@
       <div class="sidebar__menu">
         <nav class="sidebar-menu">
           <ul class="sidebar-menu-list">
-            <li class="sidebar-menu-list__item" v-for="(item, index) in items" :key="index">
-              <router-link v-if="!item.children.length"
+            <li class="sidebar-menu-list__item" v-for="(item, index) in filteredList" :key="index">
+              <router-link v-if="!item.children || item.children.length === 0"
                            class="sidebar-menu-list-item"
                            :to="item.link ? {name: item.link} : {name: 'home'}" :exact="true">
                 <span class="sidebar-menu-list-item__icon">
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 export default {
   data () {
     return {
@@ -66,6 +66,7 @@ export default {
           id: 'home',
           title: 'Домой',
           icon: 'fas fa-home',
+          children: [],
           link: 'home'
         },
         {
@@ -73,6 +74,7 @@ export default {
           title: 'Шаблоны',
           icon: 'fas fa-th-large',
           link: 'asset',
+          children: [],
           collapsed: true
         }
       ],
@@ -81,21 +83,20 @@ export default {
   },
   computed: {
     ...mapGetters('template', ['templates']),
-    items () {
-      return this.list.map(item => {
-        item.children = item.id === 'templates' ? this.templates : [];
-        return item;
+    filteredList () {
+      return this.list.filter(item => {
+        return (item.title.toLowerCase().includes(this.search.toLowerCase()));
       });
     }
   },
   methods: {
     toggleCollapse () {
       this.isCollapsed = !this.isCollapsed;
-    },
-    ...mapActions('template', ['getAll'])
+    }
   },
   created () {
-    this.getAll();
+    const index = this.list.findIndex(item => item.id === 'templates');
+    this.list[index].children = this.templates;
   }
 };
 </script>
@@ -183,6 +184,8 @@ export default {
   }
   &__icon {
     margin-right: 20px;
+    position: relative;
+    z-index: 2;
   }
   &__text {
     position: relative;

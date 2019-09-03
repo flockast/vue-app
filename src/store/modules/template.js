@@ -1,7 +1,7 @@
 import Template from '../../api/Template';
 
 const state = {
-  templates: {}
+  templates: []
 };
 
 const mutations = {

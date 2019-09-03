@@ -1,14 +1,15 @@
 <template>
   <div>
-    <Counter />
+    <div class="pseudo-content">
+      home
+    </div>
   </div>
 </template>
 
 <script>
-import Counter from '@/components/Counter.vue';
 export default {
   components: {
-    Counter
+
   }
 };
 </script>

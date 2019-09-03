@@ -1,33 +1,19 @@
 <template>
   <transition name="fade" mode="out-in">
-    <div v-if="isAuth" :key="1" class="wrapper">
-      <Header />
-      <div class="content-wrapper">
-        <div class="content-wrapper__sidebar">
-          <Sidebar />
-        </div>
-        <div class="content-wrapper__page">
-          <PageContent />
-        </div>
-      </div>
-    </div>
+    <Wrapper v-if="isAuth" :key="1"/>
     <div v-else :key="2" class="loader"></div>
   </transition>
 </template>
 
 <script>
-import Header from '../components/Header.vue';
-import Sidebar from '../components/Sidebar.vue';
-import PageContent from '../components/PageContent.vue';
+import Wrapper from '../components/Wrapper.vue';
 
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'app',
   components: {
-    Header,
-    Sidebar,
-    PageContent
+    Wrapper
   },
   computed: mapGetters('user', ['isAuth', 'token']),
   methods: mapActions('user', ['auth']),
@@ -38,16 +24,6 @@ export default {
 </script>
 
 <style lang="scss">
-  .content-wrapper {
-    display: flex;
-    flex: 1 1 auto;
-    &__sidebar {
-
-    }
-    &__page {
-      flex: 1;
-    }
-  }
   .loader {
     width: 100%;
     height: 100vh;
