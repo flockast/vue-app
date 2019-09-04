@@ -5,7 +5,7 @@
         <input type="text" class="input input--full input--search" v-model="searchQuery">
       </div>
       <div class="sidebar__menu">
-        <Menu :isCollapsed="isCollapsed"
+        <Menu :isCollapsedSidebar="isCollapsed"
               :searchQuery="searchQuery"/>
       </div>
       <div class="sidebar__collapse">
