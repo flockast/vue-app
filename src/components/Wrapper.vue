@@ -15,7 +15,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import Header from '../components/Header.vue';
-import Sidebar from '../components/Sidebar.vue';
+import Sidebar from './Sidebar/Sidebar.vue';
 import PageContent from '../components/PageContent.vue';
 
 export default {

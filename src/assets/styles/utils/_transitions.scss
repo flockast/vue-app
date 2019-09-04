@@ -1,12 +1,21 @@
+/* name="fade" */
 .fade-enter-active, .fade-leave-active {
   transition: .2s ease-in-out;
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
 }
-.fade-enter {
+
+/* name="fade-up" */
+.fade-up-enter-active, .fade-leave-active {
+  transition: .2s ease-in-out;
+}
+.fade-up-enter, .fade-up-leave-to {
+  opacity: 0;
+}
+.fade-up-enter {
   transform: translateY(-10px);
 }
-.fade-enter-to {
+.fade-up-enter-to {
   transform: translateY(0px);
 }

@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade" mode="out-in">
+  <transition name="fade-up" mode="out-in">
     <Wrapper v-if="isAuth" :key="1"/>
     <div v-else :key="2" class="loader"></div>
   </transition>
