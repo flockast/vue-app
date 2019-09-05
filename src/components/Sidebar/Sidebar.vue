@@ -2,7 +2,11 @@
   <aside class="sidebar-wrapper" :class="{'is-collapsed': isCollapsedSidebar}">
     <div class="sidebar">
       <div v-if="!isCollapsedSidebar" class="sidebar__search">
-        <input type="text" class="input input--full input--search" v-model="searchQuery">
+        <input type="text"
+               class="input input--full input--search"
+               v-model="searchQuery"
+               placeholder="Quick search [ ctrl + s ]"
+               v-shortkey.focus="['ctrl', 's']">
       </div>
       <div class="sidebar__menu">
         <Menu :isCollapsedSidebar="isCollapsedSidebar"
@@ -11,9 +15,11 @@
       <div class="sidebar__collapse">
         <button class="sidebar-collapse-btn"
                 :class="{'is-collapsed': isCollapsedSidebar}"
+                v-shortkey="['ctrl', 'c']"
+                @shortkey="toggleCollapse"
                 @click="toggleCollapse">
           <span class="sidebar-collapse-btn__icon"><i class="fas fa-angle-double-left"></i></span>
-          <span class="sidebar-collapse-btn__text">Свернуть</span>
+          <span class="sidebar-collapse-btn__text">Свернуть [ ctrl + c ]</span>
         </button>
       </div>
     </div>

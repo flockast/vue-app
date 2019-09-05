@@ -10,6 +10,10 @@
     box-shadow: 0 0 0 1px $color-main-light;
     border-color: $color-main-light;
   }
+  &::placeholder {
+    font-size: 1.2rem;
+    color: $color-font-grey;
+  }
   &--full {
     width: 100%;
   }

@@ -29,6 +29,7 @@
 import { mapGetters } from 'vuex';
 import _ from 'lodash';
 
+import helpers from '../../mixins/helpers';
 import MenuItem from './MenuItem';
 import MenuItemWithSubItem from './MenuItemWithSubItem';
 
@@ -60,9 +61,10 @@ export default {
       return this.sortingTemplates();
     }
   },
+  mixins: [ helpers ],
   methods: {
     filterBySearch (list) {
-      return list.filter(item => item.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
+      return list.filter(item => this.readyToSearch(item.title).includes(this.readyToSearch(this.searchQuery)));
     },
     sortingTemplates () {
       return _.partition(this.filteredTemplates, item => item.cmsData && item.cmsData.topLevel);
