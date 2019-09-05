@@ -29,9 +29,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   props: {
-    isCollapsedSidebar: [ Boolean ],
     searchQuery: [ String ],
     subItems: [ Array ],
     title: [ String ],
@@ -45,11 +46,16 @@ export default {
   },
   methods: {
     handleClickItem () {
-      this.isOpened = !this.isOpened;
-      this.$store.dispatch('settings/changeSidebarCollapse', false);
+      if (this.isCollapsedSidebar) {
+        this.$store.dispatch('settings/changeSidebarCollapse', false);
+        this.isOpened = true;
+      } else {
+        this.isOpened = !this.isOpened;
+      }
     }
   },
   computed: {
+    ...mapGetters('settings', ['isCollapsedSidebar']),
     isFounded () {
       return this.searchQuery.length !== 0;
     }

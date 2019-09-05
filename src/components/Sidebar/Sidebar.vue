@@ -9,8 +9,7 @@
                v-shortkey.focus="['ctrl', 's']">
       </div>
       <div class="sidebar__menu">
-        <Menu :isCollapsedSidebar="isCollapsedSidebar"
-              :searchQuery="searchQuery"/>
+        <Menu :searchQuery="searchQuery"/>
       </div>
       <div class="sidebar__collapse">
         <button class="sidebar-collapse-btn"
@@ -76,7 +75,7 @@ export default {
     overflow: hidden;
   }
   &__collapse {
-    border-top: 1px solid $color-border;
+
   }
 }
 .sidebar-collapse-btn {
@@ -86,13 +85,15 @@ export default {
   width: 100%;
   padding: 15px;
   border: none;
+  border-top: 1px solid $color-border;
   background: none;
+  color: $color-font-dark;
   appearance: none;
   text-align: left;
   cursor: pointer;
   &:focus {
     outline: none;
-    box-shadow: inset 0 0 0 2px #6e4e9e;
+    background: $color-main-lighter;
   }
   &.is-collapsed {
     .sidebar-collapse-btn__icon {
@@ -109,7 +110,6 @@ export default {
   }
   &__text {
     font-size: 1.4rem;
-    color: $color-font-dark;
     white-space: nowrap;
     transition: opacity .2s ease-in-out;
   }

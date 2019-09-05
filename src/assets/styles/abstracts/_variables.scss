@@ -10,6 +10,7 @@ $line-height: 1.125;
 $color-main: #563d7c;
 $color-main-dark: darken($color-main, 10%);
 $color-main-light: lighten($color-main, 10%);
+$color-main-lighter: lighten($color-main, 60%);
 $color-font-dark: #2e2e2e;
 $color-font-grey: #707070;
 $color-font-light: #d1d1f0;
