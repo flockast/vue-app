@@ -5,5 +5,10 @@ export default {
     return Service.post('content.templates', { all: 1 }, (status, data) => {
       return Object.keys(data.data).map(key => data.data[key]);
     });
+  },
+  getObjectsById (id) {
+    return Service.post(`content.templates.${id}.objects`, {}, (status, data) => {
+      return Object.keys(data.data).map(key => data.data[key]);
+    });
   }
 };

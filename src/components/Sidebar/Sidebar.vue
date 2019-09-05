@@ -5,7 +5,7 @@
         <input type="text"
                class="input input--full input--search"
                v-model="searchQuery"
-               placeholder="Quick search [ ctrl + s ]"
+               placeholder="Quick search"
                v-shortkey.focus="['ctrl', 's']">
       </div>
       <div class="sidebar__menu">
@@ -18,7 +18,7 @@
                 @shortkey="toggleCollapse"
                 @click="toggleCollapse">
           <span class="sidebar-collapse-btn__icon"><i class="fas fa-angle-double-left"></i></span>
-          <span class="sidebar-collapse-btn__text">Свернуть [ ctrl + c ]</span>
+          <span class="sidebar-collapse-btn__text">Свернуть</span>
         </button>
       </div>
     </div>

@@ -7,7 +7,6 @@
 
 <script>
 import Wrapper from '../components/Wrapper.vue';
-
 import { mapActions, mapGetters } from 'vuex';
 
 export default {

@@ -24,6 +24,7 @@ export default new Router({
     },
     {
       path: '*',
+      name: '404',
       component: PageNotFound
     }
   ]

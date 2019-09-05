@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="pseudo-content">
-      home
-    </div>
+    <div class="title title--lg">Главная страница</div>
   </div>
 </template>
 

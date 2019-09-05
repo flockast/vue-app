@@ -1,0 +1,11 @@
+.title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1em;
+  &--sm {
+    font-size: 1.4rem;
+  }
+  &--lg {
+    font-size: 2rem;
+  }
+}

@@ -6,7 +6,7 @@
         <Sidebar v-if="templates.length > 0"/>
       </div>
       <div class="content-wrapper__page">
-        <PageContent />
+        <PageContent v-if="templates.length > 0" />
       </div>
     </div>
   </div>
@@ -24,10 +24,10 @@ export default {
     Sidebar,
     PageContent
   },
-  methods: mapActions('template', ['getAll']),
+  methods: mapActions('template', ['getAllTemplates']),
   computed: mapGetters('template', ['templates']),
   created () {
-    this.getAll();
+    this.getAllTemplates();
   }
 };
 </script>

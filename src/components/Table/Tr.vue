@@ -58,11 +58,9 @@
         </div>
         <div class="cell cell--8">
           <div class="table-wrapper">
+            <div class="title title--sm">films:</div>
             <table class="table">
               <thead>
-                <tr>
-                  <th colspan="3">films</th>
-                </tr>
                 <tr>
                   <th>id</th>
                   <th>hidden</th>
