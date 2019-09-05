@@ -2,7 +2,7 @@
 <li v-if="subItems.length > 0" class="sidebar-menu-list__item">
     <span class="sidebar-menu-list-item"
           :class="{'is-opened': isOpened || isFounded}"
-          @click="toggleOpened">
+          @click="handleClickItem">
       <span v-if="icon" class="sidebar-menu-list-item__icon">
         <i :class="icon"></i>
       </span>
@@ -44,8 +44,9 @@ export default {
     };
   },
   methods: {
-    toggleOpened () {
+    handleClickItem () {
       this.isOpened = !this.isOpened;
+      this.$store.dispatch('settings/changeSidebarCollapse', false);
     }
   },
   computed: {

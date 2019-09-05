@@ -1,16 +1,16 @@
 <template>
-  <aside class="sidebar-wrapper" :class="{'is-collapsed': isCollapsed}">
+  <aside class="sidebar-wrapper" :class="{'is-collapsed': isCollapsedSidebar}">
     <div class="sidebar">
-      <div v-if="!isCollapsed" class="sidebar__search">
+      <div v-if="!isCollapsedSidebar" class="sidebar__search">
         <input type="text" class="input input--full input--search" v-model="searchQuery">
       </div>
       <div class="sidebar__menu">
-        <Menu :isCollapsedSidebar="isCollapsed"
+        <Menu :isCollapsedSidebar="isCollapsedSidebar"
               :searchQuery="searchQuery"/>
       </div>
       <div class="sidebar__collapse">
         <button class="sidebar-collapse-btn"
-                :class="{'is-collapsed': isCollapsed}"
+                :class="{'is-collapsed': isCollapsedSidebar}"
                 @click="toggleCollapse">
           <span class="sidebar-collapse-btn__icon"><i class="fas fa-angle-double-left"></i></span>
           <span class="sidebar-collapse-btn__text">Свернуть</span>
@@ -21,22 +21,23 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Menu from './Menu';
 
 export default {
   data () {
     return {
-      searchQuery: '',
-      isCollapsed: false
+      searchQuery: ''
     };
   },
+  computed: mapGetters('settings', ['isCollapsedSidebar']),
   components: {
     Menu
   },
   methods: {
     toggleCollapse () {
-      this.isCollapsed = !this.isCollapsed;
-      if (this.isCollapsed) this.searchQuery = '';
+      this.$store.dispatch('settings/changeSidebarCollapse');
+      if (this.isCollapsedSidebar) this.searchQuery = '';
     }
   }
 };
