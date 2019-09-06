@@ -42,7 +42,12 @@
               <tbody>
               <tr>
                 <td>hidden</td>
-                <td><input type="checkbox"></td>
+                <td>
+                  <div class="checkbox">
+                    <input class="checkbox__input" type="checkbox">
+                    <div class="checkbox__control" aria-hidden="true"></div>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>name</td>
@@ -70,7 +75,12 @@
               <tbody>
                 <tr>
                   <td>3210</td>
-                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="checkbox">
+                      <input class="checkbox__input" type="checkbox">
+                      <div class="checkbox__control" aria-hidden="true"></div>
+                    </div>
+                  </td>
                   <td><input type="text" class="input input--full" value="batman"></td>
                 </tr>
                 <tr>
