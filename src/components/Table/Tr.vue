@@ -73,37 +73,36 @@
             </table>
           </div>
         </div>
-        <div class="cell cell--8">
-          <div class="table-wrapper">
+        <div class="cell cell--8" v-if="notEmptyArray(currentChildren)">
+          <div v-for="(child, index) in currentChildren" :key="index">
+            <div class="table-wrapper" v-if="notEmptyArray(child.objects)">
             <table class="table">
               <thead>
                 <tr>
-                  <th colspan="3">films:</th>
+                  <th :colspan="child.template.params.length + 2">{{ child.template.title }}:</th>
                 </tr>
                 <tr>
                   <th>id</th>
                   <th>hidden</th>
-                  <th>title</th>
+                  <th v-for="param in child.template.params" :key="param.id">{{ param.title }}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>3210</td>
+                <tr v-for="object in child.objects" :key="object.id">
+                  <td>{{ object.id }}</td>
                   <td>
                     <div class="checkbox">
-                      <input class="checkbox__input" type="checkbox">
-                      <div class="checkbox__control" aria-hidden="true"></div>
+                      <input type="checkbox" class="checkbox__input" v-model="object.hidden">
+                      <div class="checkbox__control"></div>
                     </div>
                   </td>
-                  <td><input type="text" class="input input--full" value="batman"></td>
-                </tr>
-                <tr>
-                  <td>3211</td>
-                  <td><input type="checkbox"></td>
-                  <td><input type="text" class="input input--full" value="robin"></td>
+                  <td v-for="param in child.template.params" :key="param.id">
+                    <input type="text" class="input input--full" v-model="object.values[param.id]">
+                  </td>
                 </tr>
               </tbody>
             </table>
+          </div>
           </div>
         </div>
       </div>
@@ -113,6 +112,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import helpers from '../../mixins/helpers';
 import _ from 'lodash';
 
 export default {
@@ -123,9 +124,15 @@ export default {
   data () {
     return {
       isOpen: false,
-      localObject: {}
+      localObject: {},
+      currentChildren: []
     };
   },
+  computed: {
+    ...mapGetters('template', ['childrenTemplates']),
+    ...mapGetters('object', ['childrenObjects'])
+  },
+  mixins: [ helpers ],
   methods: {
     toggleSub () {
       this.isOpen = !this.isOpen;
@@ -133,6 +140,14 @@ export default {
   },
   created () {
     this.localObject = _.cloneDeep(this.object);
+    this.childrenTemplates.forEach(template => {
+      this.currentChildren.push({
+        template: template.template,
+        paramId: template.paramId,
+        objects: this.childrenObjects.filter(object => object.values[template.paramId] === this.object.id)
+      });
+    });
+    this.currentChildren = _.cloneDeep(this.currentChildren);
   }
 };
 </script>
