@@ -1,9 +1,11 @@
 <template>
   <tbody>
     <tr :class="{'is-opened': isOpen}">
-      <td>3214</td>
-      <td>Arnold Schwarzenegger</td>
-      <td>today</td>
+      <td>{{ object.id }}</td>
+      <td v-for="(param, index) in template.params" :key="index">
+        <span v-if="param.type.type === 'list'">list</span>
+        <span v-else>{{ object.values[param.id] }}</span>
+      </td>
       <td>
         <div class="table-options">
           <div class="table-options__item">
@@ -28,7 +30,7 @@
       </td>
     </tr>
     <tr v-if="isOpen" class="sub">
-    <td colspan="4">
+    <td :colspan="template.params.length + 2">
       <div class="grid">
         <div class="cell cell--4">
           <div class="table-wrapper">
@@ -36,26 +38,36 @@
               <thead>
               <tr>
                 <th>id</th>
-                <th>3214</th>
+                <th>{{ object.id }}</th>
               </tr>
               </thead>
               <tbody>
               <tr>
-                <td>hidden</td>
+                <td>Hidden</td>
                 <td>
                   <div class="checkbox">
-                    <input class="checkbox__input" type="checkbox">
-                    <div class="checkbox__control" aria-hidden="true"></div>
+                    <input type="checkbox" class="checkbox__input" v-model="localObject.hidden">
+                    <div class="checkbox__control"></div>
                   </div>
                 </td>
               </tr>
               <tr>
-                <td>name</td>
-                <td><input type="text" class="input input--full" value="Arnold Schwarzenegger"></td>
+                <td>Tags</td>
+                <td>
+                  <input type="text" class="input input--full" v-model="localObject.tags">
+                </td>
               </tr>
-              <tr>
-                <td>date</td>
-                <td><input type="text" class="input input--full" value="today"></td>
+              <tr v-for="(param, index) in template.params" :key="index">
+                <td>{{ param.title }}</td>
+                <td>
+                  <div v-if="param.type.type === 'boolean'" class="checkbox">
+                    <input type="checkbox" class="checkbox__input" v-model="localObject.values[param.id]">
+                    <div class="checkbox__control"></div>
+                  </div>
+                  <span v-else>
+                    <input type="text" class="input input--full" v-model="localObject.values[param.id]">
+                  </span>
+                </td>
               </tr>
               </tbody>
             </table>
@@ -63,9 +75,11 @@
         </div>
         <div class="cell cell--8">
           <div class="table-wrapper">
-            <div class="title title--sm">films:</div>
             <table class="table">
               <thead>
+                <tr>
+                  <th colspan="3">films:</th>
+                </tr>
                 <tr>
                   <th>id</th>
                   <th>hidden</th>
@@ -99,16 +113,26 @@
 </template>
 
 <script>
+import _ from 'lodash';
+
 export default {
+  props: {
+    object: [ Object ],
+    template: [ Object ]
+  },
   data () {
     return {
-      isOpen: false
+      isOpen: false,
+      localObject: {}
     };
   },
   methods: {
     toggleSub () {
       this.isOpen = !this.isOpen;
     }
+  },
+  created () {
+    this.localObject = _.cloneDeep(this.object);
   }
 };
 </script>

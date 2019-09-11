@@ -13,6 +13,7 @@
 
 <script>
 import Breadcrumbs from './Breadcrumbs';
+
 export default {
   components: {
     Breadcrumbs

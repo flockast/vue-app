@@ -1,21 +1,18 @@
 .table-wrapper {
-  overflow: auto;
+  overflow-x: scroll;
 }
 .table {
   width: 100%;
   border-collapse: collapse;
   font-size: 1.4rem;
+  border-radius: $border-radius $border-radius 0 0;
+  overflow: hidden;
   thead {
     tr {
       th {
         background: $color-table-head;
         color: $color-font-dark;
-        &:first-child {
-          border-radius: $border-radius 0 0 0;
-        }
-        &:last-child {
-          border-radius: 0 $border-radius 0 0;
-        }
+        white-space: nowrap;
       }
     }
   }
@@ -25,11 +22,13 @@
       border-bottom: 1px solid $color-border;
       background: #ffffff;
       vertical-align: middle;
+      //min-width: 200px;
     }
     th {
       padding: 1rem 1.5rem;
       font-weight: bold;
       text-align: left;
+      //min-width: 200px;
     }
     &.sub {
       & > td {

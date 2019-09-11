@@ -58,6 +58,7 @@ export default {
 }
 .sidebar {
   position: fixed;
+  z-index: 100;
   left: 0;
   display: flex;
   flex-direction: column;

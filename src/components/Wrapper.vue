@@ -1,12 +1,12 @@
 <template>
   <div class="wrapper">
     <Header />
-    <div class="content-wrapper">
+    <div v-if="notEmptyArray(templates)" class="content-wrapper">
       <div class="content-wrapper__sidebar">
-        <Sidebar v-if="templates.length > 0"/>
+        <Sidebar />
       </div>
       <div class="content-wrapper__page">
-        <PageContent v-if="templates.length > 0" />
+        <PageContent />
       </div>
     </div>
   </div>
@@ -17,6 +17,7 @@ import { mapActions, mapGetters } from 'vuex';
 import Header from '../components/Header.vue';
 import Sidebar from './Sidebar/Sidebar.vue';
 import PageContent from '../components/PageContent.vue';
+import helpers from '../mixins/helpers';
 
 export default {
   components: {
@@ -26,6 +27,7 @@ export default {
   },
   methods: mapActions('template', ['getAllTemplates']),
   computed: mapGetters('template', ['templates']),
+  mixins: [ helpers ],
   created () {
     this.getAllTemplates();
   }
@@ -41,6 +43,7 @@ export default {
   }
   &__page {
     flex: 1;
+    overflow: hidden;
   }
 }
 </style>

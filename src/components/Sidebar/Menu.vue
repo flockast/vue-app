@@ -9,14 +9,14 @@
     <MenuItemWithSubItem
         :subItems="allTemplates[0]"
         :searchQuery="searchQuery"
-        title="Шаблоны"
+        title="Объекты"
         link="template"
         icon="fas fa-th-large"/>
 
     <MenuItemWithSubItem
         :subItems="allTemplates[1]"
         :searchQuery="searchQuery"
-        title="Другие"
+        title="Другие объекты"
         link="template"
         icon="fas fa-th"/>
   </ul>
@@ -26,7 +26,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import _ from 'lodash';
-
 import helpers from '../../mixins/helpers';
 import MenuItem from './MenuItem';
 import MenuItemWithSubItem from './MenuItemWithSubItem';

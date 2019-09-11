@@ -4,37 +4,26 @@
       <thead>
         <tr>
           <th>id</th>
-          <th>name</th>
-          <th>date</th>
+          <th v-for="(param, index) in template.params" :key="index">{{ param.title }}</th>
           <th></th>
         </tr>
       </thead>
-      <Tr />
-      <Tr />
-      <Tr />
-      <Tr />
+      <Tr v-for="object in objects"
+          :object="object"
+          :template="template"
+          :key="object.id"/>
     </table>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Tr from './Tr';
-export default {
-  data () {
-    return {
-      assets: [
-        {
-          id: 1,
-          name: 'name',
-          date: 'today',
-          childrens: [
-            {
 
-            }
-          ]
-        }
-      ]
-    };
+export default {
+  computed: {
+    ...mapGetters('template', ['template']),
+    ...mapGetters('object', ['objects'])
   },
   components: {
     Tr

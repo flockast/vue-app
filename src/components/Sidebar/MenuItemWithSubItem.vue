@@ -1,5 +1,5 @@
 <template>
-<li v-if="subItems.length > 0" class="sidebar-menu-list__item">
+<li v-if="notEmptyArray(subItems)" class="sidebar-menu-list__item">
     <span class="sidebar-menu-list-item"
           :class="{'is-opened': isOpened || isFounded}"
           @click="handleClickItem">
@@ -30,6 +30,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import helpers from '../../mixins/helpers';
 
 export default {
   props: {
@@ -44,6 +45,7 @@ export default {
       isOpened: false
     };
   },
+  mixins: [ helpers ],
   methods: {
     handleClickItem () {
       if (this.isCollapsedSidebar) {
