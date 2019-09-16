@@ -7,12 +7,10 @@
         <i :class="icon"></i>
       </span>
       <span class="sidebar-menu-list-item__text">{{ title }}</span>
-      <transition name="fade">
-        <span v-if="!isCollapsedSidebar"
-              class="sidebar-menu-list-item__toggle">
-          <i class="fas fa-chevron-up"></i>
-        </span>
-      </transition>
+      <span v-if="!isCollapsedSidebar"
+            class="sidebar-menu-list-item__toggle">
+        <i class="fas fa-chevron-up"></i>
+      </span>
     </span>
   <transition name="fade">
     <ul v-if="!isCollapsedSidebar && isOpened || isFounded" class="sidebar-menu-list">

@@ -133,6 +133,7 @@ export default {
   &__text {
     font-size: 1.4rem;
     position: relative;
+    white-space: nowrap;
     z-index: 2;
   }
   &__toggle {

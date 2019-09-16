@@ -1,6 +1,6 @@
 <template>
   <tbody>
-    <tr :class="{'is-opened': isOpen}">
+    <tr :class="{'is-opened': isOpen, 'is-loading': isLoading}">
       <td>{{ object.id }}</td>
       <td v-for="(param, index) in template.params" :key="index">
         <span v-if="param.type.type === 'list'">list</span>
@@ -9,7 +9,7 @@
       <td>
         <div class="table-options">
           <div class="table-options__item">
-            <button class="table-option-btn table-option-btn--save">
+            <button class="table-option-btn table-option-btn--save" @click="save">
               <i class="far fa-save"></i>
             </button>
           </div>
@@ -29,10 +29,10 @@
         </div>
       </td>
     </tr>
-    <tr v-if="isOpen" class="sub">
+    <tr v-if="isOpen" class="sub" :class="{'is-loading': isLoading}">
     <td :colspan="template.params.length + 2">
-      <div class="grid">
-        <div class="cell cell--4">
+      <div class="sub-row">
+        <div class="sub-col sub-col--main">
           <div class="table-wrapper">
             <table class="table">
               <thead>
@@ -73,7 +73,7 @@
             </table>
           </div>
         </div>
-        <div class="cell cell--8" v-if="notEmptyArray(currentChildren)">
+        <div class="sub-col sub-col--full" v-if="notEmptyArray(currentChildren)">
           <div v-for="(child, index) in currentChildren" :key="index">
             <div class="table-wrapper" v-if="notEmptyArray(child.objects)">
             <table class="table">
@@ -88,7 +88,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="object in child.objects" :key="object.id">
+                <tr v-for="(object, index) in child.objects" :key="index">
                   <td>{{ object.id }}</td>
                   <td>
                     <div class="checkbox">
@@ -96,7 +96,7 @@
                       <div class="checkbox__control"></div>
                     </div>
                   </td>
-                  <td v-for="param in child.template.params" :key="param.id">
+                  <td v-for="(param, index) in child.template.params" :key="index">
                     <input type="text" class="input input--full" v-model="object.values[param.id]">
                   </td>
                 </tr>
@@ -107,14 +107,15 @@
         </div>
       </div>
     </td>
-</tr>
+    </tr>
   </tbody>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import helpers from '../../mixins/helpers';
 import _ from 'lodash';
+import ObjectApi from '../../api/Object';
 
 export default {
   props: {
@@ -124,6 +125,7 @@ export default {
   data () {
     return {
       isOpen: false,
+      isLoading: false,
       localObject: {},
       currentChildren: []
     };
@@ -134,8 +136,38 @@ export default {
   },
   mixins: [ helpers ],
   methods: {
+    ...mapActions('object', ['update']),
     toggleSub () {
       this.isOpen = !this.isOpen;
+    },
+    async save () {
+      this.isLoading = true;
+      // preparation data main object
+      let data = {
+        [this.localObject.id]: {
+          data: {
+            revision: this.localObject.revision,
+            hidden: this.localObject.hidden,
+            tags: this.localObject.tags,
+            values: this.localObject.values
+          }
+        }
+      };
+      // preparation data children objects
+      this.currentChildren.forEach(child => {
+        child.objects.forEach(object => {
+          data[object.id] = {
+            data: {
+              revision: object.revision,
+              hidden: object.hidden,
+              values: object.values
+            }
+          };
+        });
+      });
+      await ObjectApi.update(data);
+      // todo: need to update vuex objects
+      this.isLoading = false;
     }
   },
   created () {
@@ -151,3 +183,23 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+  .sub-container {
+    width: 100%;
+    overflow: hidden;
+  }
+  .sub-row {
+    display: flex;
+    margin: 0 -.5rem;
+  }
+  .sub-col {
+    padding: 0 .5rem;
+    &--main {
+      width: 300px;
+    }
+    &--full {
+      flex: 1;
+    }
+  }
+</style>

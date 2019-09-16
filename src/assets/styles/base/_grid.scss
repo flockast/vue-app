@@ -4,7 +4,11 @@
 
 .grid { @include row-flex(); }
 
+.grid--nowrap { flex-wrap: nowrap; }
+
 .cell { @include col(); }
+
+.cell--full { flex: 1; }
 
 @for $i from 0 to $columns {
   .cell--#{$i + 1} { @include size($i + 1); }

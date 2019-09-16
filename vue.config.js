@@ -1,4 +1,4 @@
-const isDev = process.env.NODE_ENV === 'development';
+// const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
   pages: {
@@ -12,10 +12,10 @@ module.exports = {
     config.optimization.delete('splitChunks');
   },
   configureWebpack: {
-    devtool: isDev ? 'eval-source-map' : false
+    // devtool: isDev ? 'eval-source-map' : false
   },
   css: {
-    sourceMap: isDev,
+    // sourceMap: isDev,
     loaderOptions: {
       sass: {
         data:

@@ -16,5 +16,13 @@ export default {
     }, (status, data) => {
       return Object.keys(data.data).map(key => data.data[key]);
     });
+  },
+  update (data) {
+    return Service.post('content.objects', {
+      action: 'update',
+      jsonModels: JSON.stringify(data)
+    }, (status, data) => {
+      return data;
+    });
   }
 };
