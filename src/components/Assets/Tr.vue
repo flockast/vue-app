@@ -73,10 +73,9 @@
 
 <script>
 import _ from 'lodash';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import helpers from '../../mixins/helpers';
 import LinkedTables from './LinkedTables';
-import Asset from "../../api/Asset";
 
 export default {
   props: {
@@ -96,11 +95,30 @@ export default {
   },
   mixins: [ helpers ],
   methods: {
+    ...mapActions('asset', ['updateAssets']),
     toggleSub () {
       this.isOpen = !this.isOpen;
     },
     async handleClickSave () {
       this.isLoading = true;
+
+      // prepare to update main asset
+      let updateData = {
+        [this.asset.id]: { data: this.asset }
+      };
+
+      // prepare to update linked assets
+      if (this.linkedTemplatesWidthAssets.length > 0) {
+        this.linkedTemplatesWidthAssets.forEach(linked => {
+          linked.assets.forEach(asset => {
+            updateData[asset.id] = { data: asset };
+          });
+        });
+      }
+
+      // update assets
+      await this.updateAssets(updateData);
+
       this.isLoading = false;
     },
     async handleClickRemove () {

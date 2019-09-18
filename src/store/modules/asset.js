@@ -1,7 +1,8 @@
 import Asset from '../../api/Asset';
 
 const state = {
-  currentAssets: {}
+  currentAssets: {},
+  removedAssets: []
 };
 
 const getters = {
@@ -22,11 +23,9 @@ const getters = {
 
 const mutations = {
   setAssets: (state, assets) => { state.currentAssets = assets; },
-  updateAssetValue: (state, objInput) => {
-    state.currentAssets[objInput.assetId].values[objInput.paramId] = objInput.value;
-  },
-  updateAssetProperty: (state, objInput) => {
-    state.currentAssets[objInput.assetId][objInput.property] = objInput.value;
+  updateAsset: (state, { id, data }) => {
+    state.currentAssets[id].revision = data.revision;
+    state.currentAssets[id].lastUpdate = data.lastUpdate;
   }
 };
 
@@ -34,6 +33,12 @@ const actions = {
   async fetchAssetsByTemplatesIds ({ commit }, ids) {
     const response = await Asset.fetchByTemplates(...ids);
     commit('setAssets', response);
+  },
+  async updateAssets ({ commit }, data) {
+    const response = await Asset.update(data);
+    Object.keys(response.data).forEach(id => {
+      commit('updateAsset', { id, data: response.data[id] });
+    });
   }
 };
 
