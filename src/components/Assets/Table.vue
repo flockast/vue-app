@@ -8,22 +8,21 @@
           <th></th>
         </tr>
       </thead>
-      <Tr v-for="object in objects"
-          :object="object"
+      <Tr v-for="asset in assets"
+          :asset="asset"
           :template="template"
-          :key="object.id"/>
+          :key="asset.id"/>
     </table>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import Tr from './Tr';
 
 export default {
-  computed: {
-    ...mapGetters('template', ['template']),
-    ...mapGetters('object', ['objects'])
+  props: {
+    template: [Object],
+    assets: [Array]
   },
   components: {
     Tr

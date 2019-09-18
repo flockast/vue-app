@@ -6,7 +6,7 @@ export default {
       return Object.keys(data.data).map(key => data.data[key]);
     });
   },
-  fetchByTemplate (...ids) {
+  fetchByTemplates (...ids) {
     return Service.post('content.objects', {
       jsonQuery: JSON.stringify({
         templateId: {
@@ -14,7 +14,7 @@ export default {
         }
       })
     }, (status, data) => {
-      return Object.keys(data.data).map(key => data.data[key]);
+      return data.data;
     });
   },
   update (data) {

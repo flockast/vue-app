@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="content__breadcrumbs">
-      <Breadcrumbs />
+
     </div>
     <div class="content__page">
       <transition name="fade-up" mode="out-in">
@@ -12,12 +12,8 @@
 </template>
 
 <script>
-import Breadcrumbs from './Breadcrumbs';
-
 export default {
-  components: {
-    Breadcrumbs
-  }
+
 };
 </script>
 

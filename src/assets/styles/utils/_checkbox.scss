@@ -42,4 +42,20 @@
     border-radius: $border-radius;
     border: 1px solid $color-border;
   }
+  &--readonly {
+    .checkbox__input {
+      cursor: default;
+      &:focus ~ .checkbox__control {
+        box-shadow: none;
+        border-color: $color-grey;
+      }
+      &:active ~ .checkbox__control {
+        background-color: inherit;
+      }
+      &:checked ~ .checkbox__control {
+        background-color: $color-grey;
+        border-color: transparent;
+      }
+    }
+  }
 }

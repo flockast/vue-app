@@ -10,14 +10,14 @@
         :subItems="allTemplates[0]"
         :searchQuery="searchQuery"
         title="Объекты"
-        link="template"
+        link="assets"
         icon="fas fa-th-large"/>
 
     <MenuItemWithSubItem
         :subItems="allTemplates[1]"
         :searchQuery="searchQuery"
         title="Другие объекты"
-        link="template"
+        link="assets"
         icon="fas fa-th"/>
   </ul>
 </nav>

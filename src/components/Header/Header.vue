@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import GameAccount from './Header/GameAccount';
-import Menu from './Header/Menu';
-import Search from './Header/Search';
+import GameAccount from './GameAccount';
+import Menu from './Menu';
+import Search from './Search';
 
 export default {
   components: {

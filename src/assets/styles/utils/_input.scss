@@ -17,7 +17,13 @@
   &--full {
     width: 100%;
   }
-  &--serach {
-
+  &--readonly {
+    padding: 0;
+    border-color: transparent;
+    background: transparent;
+    &:focus {
+      border-color: transparent;
+      box-shadow: none;
+    }
   }
 }

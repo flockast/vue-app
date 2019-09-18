@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import template from './modules/template';
-import object from './modules/object';
+import asset from './modules/asset';
 import user from './modules/user';
 import settings from './modules/settings';
 
@@ -12,7 +12,7 @@ export default new Vuex.Store({
     settings,
     template,
     user,
-    object
+    asset
   },
-  strict: process.env.NODE_ENV !== 'production'
+  strict: false
 });
