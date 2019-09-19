@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     ...mapActions('template', ['changeCurrentTemplate']),
-    ...mapActions('asset', ['fetchAssetsByTemplatesIds']),
+    ...mapActions('asset', ['fetchAssetsByTemplatesIds', 'resetRemovedAssetsList']),
     async getContent (id) {
       this.changeCurrentTemplate(id);
 
@@ -49,6 +49,8 @@ export default {
           ...this.currentLinkedTemplates.map(item => item.templateId)
         ]);
       }
+
+      this.resetRemovedAssetsList();
 
       this.assets = this.getAssetsByTemplateId(this.currentTemplate.id);
       this.template = this.currentTemplate;

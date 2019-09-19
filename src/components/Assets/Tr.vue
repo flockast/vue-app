@@ -1,6 +1,6 @@
 <template>
   <tbody>
-    <tr :class="{'is-opened': isOpen, 'is-loading': isLoading}">
+    <tr :class="{'is-opened': isOpen, 'is-loading': isLoading, 'select-as-removed': removedAssetsList.includes(asset.id)}">
       <td>{{ asset.id }}</td>
       <td v-for="(param, index) in template.params" :key="index">
         <span v-if="param.type.type === 'list'">list</span>
@@ -18,7 +18,7 @@
             </button>
           </div>
           <div class="table-options__item">
-            <button class="table-option-btn table-option-btn--remove" @click="handleClickRemove">
+            <button class="table-option-btn table-option-btn--remove" @click="handleClickRemove(asset.id)">
               <i class="far fa-trash-alt"></i>
             </button>
           </div>
@@ -91,11 +91,11 @@ export default {
   },
   computed: {
     ...mapGetters('template', ['currentLinkedTemplates', 'getTemplateById']),
-    ...mapGetters('asset', ['getAssetsByTemplateId'])
+    ...mapGetters('asset', ['getAssetsByTemplateId', 'removedAssetsList'])
   },
   mixins: [ helpers ],
   methods: {
-    ...mapActions('asset', ['updateAssets']),
+    ...mapActions('asset', ['updateAssets', 'toggleRemovedAssetsList']),
     toggleSub () {
       this.isOpen = !this.isOpen;
     },
@@ -121,9 +121,8 @@ export default {
 
       this.isLoading = false;
     },
-    async handleClickRemove () {
-      this.isLoading = true;
-      this.isLoading = false;
+    handleClickRemove (id) {
+      this.toggleRemovedAssetsList(id);
     }
   },
   created () {

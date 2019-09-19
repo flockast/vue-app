@@ -2,12 +2,13 @@ import Asset from '../../api/Asset';
 
 const state = {
   currentAssets: {},
-  removedAssets: []
+  removedAssetsList: [],
+  addedAssets: []
 };
 
 const getters = {
   currentAssets: state => Object.keys(state.currentAssets).map(key => state.currentAssets[key]),
-  getAssetsByTemplateId: (state) => (templateId, param) => {
+  getAssetsByTemplateId: state => (templateId, param) => {
     let assets = Object.keys(state.currentAssets).map(key => state.currentAssets[key]);
     return assets.filter(item => {
       if (param) {
@@ -18,7 +19,8 @@ const getters = {
         return item.templateId === templateId;
       }
     });
-  }
+  },
+  removedAssetsList: state => state.removedAssetsList
 };
 
 const mutations = {
@@ -26,7 +28,10 @@ const mutations = {
   updateAsset: (state, { id, data }) => {
     state.currentAssets[id].revision = data.revision;
     state.currentAssets[id].lastUpdate = data.lastUpdate;
-  }
+  },
+  addToRemovedAssetsList: (state, id) => { state.removedAssetsList.push(id); },
+  removeFromRemovedAssetsList: (state, id) => { state.removedAssetsList = state.removedAssetsList.filter(item => item !== id); },
+  resetRemovedAssetsList: (state) => { state.removedAssetsList = []; }
 };
 
 const actions = {
@@ -39,7 +44,11 @@ const actions = {
     Object.keys(response.data).forEach(id => {
       commit('updateAsset', { id, data: response.data[id] });
     });
-  }
+  },
+  toggleRemovedAssetsList ({ commit, state }, id) {
+    state.removedAssetsList.includes(id) ? commit('removeFromRemovedAssetsList', id) : commit('addToRemovedAssetsList', id);
+  },
+  resetRemovedAssetsList ({ commit }) { commit('resetRemovedAssetsList'); }
 };
 
 export default {

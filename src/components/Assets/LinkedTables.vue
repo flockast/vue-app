@@ -13,7 +13,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="asset in linked.assets" :key="asset.id">
+        <tr v-for="asset in linked.assets" :key="asset.id" :class="{'select-as-removed': removedAssetsList.includes(asset.id)}">
           <td>{{ asset.id }}</td>
           <td v-for="param in linked.template.params" :key="param.id">
             <input type="text" class="input input--full" v-model="asset.values[param.id]">
@@ -21,7 +21,7 @@
           <td>
             <div class="table-options">
               <div class="table-options__item">
-                <button class="table-option-btn table-option-btn--remove">
+                <button class="table-option-btn table-option-btn--remove" @click="handleClickRemove(asset.id)">
                   <i class="far fa-trash-alt"></i>
                 </button>
               </div>
@@ -35,9 +35,21 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
   props: {
     linkedTemplatesWidthAssets: [ Array ]
+  },
+  computed: {
+    ...mapGetters('asset', ['removedAssetsList'])
+  },
+  methods: {
+    ...mapActions('asset', ['toggleRemovedAssetsList']),
+    handleClickRemove (id) {
+      console.log('click', id);
+      this.toggleRemovedAssetsList(id);
+    }
   }
 };
 </script>
