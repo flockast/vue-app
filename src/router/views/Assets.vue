@@ -1,10 +1,9 @@
 <template>
   <div v-if="!firstLoading" class="template-page" :class="{'is-loading': isLoading}">
-    <div v-if="notEmptyObject(template)">
-      <div class="title title--lg">{{ template.title }}</div>
-      <Table
-          :template="template"
-          :assets="assets"/>
+    <div v-if="notEmptyObject(localTemplate)">
+      <div class="title title--lg">{{ localTemplate.title }}</div>
+      <Table :template="localTemplate"
+             :assets="localAssets"/>
     </div>
     <div v-else>
       <span>Такого шаблона не существует</span>
@@ -22,38 +21,26 @@ export default {
     return {
       isLoading: false,
       firstLoading: true,
-      title: '',
-      template: {},
-      assets: []
+      localTemplate: {},
+      localAssets: []
     };
-  },
-  mixins: [ helpers ],
-  computed: {
-    ...mapGetters('template', ['currentTemplate', 'currentLinkedTemplates']),
-    ...mapGetters('asset', ['currentAssets', 'getAssetsByTemplateId'])
   },
   beforeRouteUpdate ({ params }, from, next) {
     this.isLoading = true;
     this.getContent(params.id);
     next();
   },
+  mixins: [ helpers ],
+  computed: {
+    ...mapGetters('templates', ['getTemplateById']),
+    ...mapGetters('template', ['template', 'assets'])
+  },
   methods: {
-    ...mapActions('template', ['changeCurrentTemplate']),
-    ...mapActions('asset', ['fetchAssetsByTemplatesIds', 'resetRemovedAssetsList']),
+    ...mapActions('template', ['changeTemplate']),
     async getContent (id) {
-      this.changeCurrentTemplate(id);
-
-      if (this.currentTemplate) {
-        await this.fetchAssetsByTemplatesIds([
-          this.currentTemplate.id,
-          ...this.currentLinkedTemplates.map(item => item.templateId)
-        ]);
-      }
-
-      this.resetRemovedAssetsList();
-
-      this.assets = this.getAssetsByTemplateId(this.currentTemplate.id);
-      this.template = this.currentTemplate;
+      await this.changeTemplate(this.getTemplateById(id));
+      this.localTemplate = this.template;
+      this.localAssets = this.assets;
       this.isLoading = false;
     }
   },

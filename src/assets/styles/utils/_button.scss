@@ -1,0 +1,52 @@
+.button {
+  display: inline-block;
+  vertical-align: top;
+  border-radius: $border-radius;
+  padding: .5rem 2rem;
+  border: 1px solid $color-main;
+  background: none;
+  color: $color-main;
+  font-size: 1.4rem;
+  appearance: none;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px $color-main-light;
+    border-color: $color-main-light;
+  }
+  &:hover {
+    background-color: $color-main-lighter;
+  }
+  &:active {
+    padding-top: .6rem;
+    padding-bottom: .4rem;
+  }
+  &--full {
+    width: 100%;
+  }
+  &--pull {
+    margin-right: 1rem;
+  }
+  &--success {
+    border-color: $color-success;
+    color: $color-success;
+    &:focus {
+      box-shadow: 0 0 0 1px $color-success-light;
+      border-color: $color-success-light;
+    }
+    &:hover {
+      background-color: $color-success-lighter;
+    }
+  }
+  &--danger {
+    border-color: $color-danger;
+    color: $color-danger;
+    &:focus {
+      box-shadow: 0 0 0 1px $color-danger-light;
+      border-color: $color-danger-light;
+    }
+    &:hover {
+      background-color: $color-danger-lighter;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import templates from './modules/templates';
 import template from './modules/template';
 import asset from './modules/asset';
 import user from './modules/user';
@@ -10,9 +11,10 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   modules: {
     settings,
+    templates,
     template,
     user,
     asset
   },
-  strict: false
+  strict: process.env.NODE_ENV !== 'production'
 });

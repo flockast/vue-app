@@ -22,6 +22,14 @@ $color-grey: #dfdfdf;
 $color-border: $color-grey;
 $color-table-head: $color-grey-light;
 
+$color-success: green;
+$color-success-light: lighten($color-success, 10%);
+$color-success-lighter: lighten($color-success, 70%);
+
+$color-danger: red;
+$color-danger-light: lighten($color-danger, 10%);
+$color-danger-lighter: lighten($color-danger, 45%);
+
 /* shapes */
 $border-radius: .4rem;
 $header-height: 5rem;

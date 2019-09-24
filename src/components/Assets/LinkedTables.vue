@@ -21,7 +21,7 @@
           <td>
             <div class="table-options">
               <div class="table-options__item">
-                <button class="table-option-btn table-option-btn--remove" @click="handleClickRemove(asset.id)">
+                <button class="table-option-btn table-option-btn--remove" @click="$emit('handleClickRemove', asset.id)">
                   <i class="far fa-trash-alt"></i>
                 </button>
               </div>
@@ -35,21 +35,17 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 
 export default {
   props: {
-    linkedTemplatesWidthAssets: [ Array ]
+    linkedTemplatesWidthAssets: [ Array ],
+    removedAssetsList: [ Array ]
   },
   computed: {
-    ...mapGetters('asset', ['removedAssetsList'])
+
   },
   methods: {
-    ...mapActions('asset', ['toggleRemovedAssetsList']),
-    handleClickRemove (id) {
-      console.log('click', id);
-      this.toggleRemovedAssetsList(id);
-    }
+
   }
 };
 </script>

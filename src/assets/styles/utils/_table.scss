@@ -57,6 +57,11 @@
         border-bottom: none;
       }
     }
+    &.is-edited {
+      td, th {
+        background: #eeeeff;
+      }
+    }
   }
 }
 

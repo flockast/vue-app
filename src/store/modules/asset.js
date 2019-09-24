@@ -1,16 +1,15 @@
 import Asset from '../../api/Asset';
 
 const state = {
-  currentAssets: {},
+  currentAssets: [],
   removedAssetsList: [],
   addedAssets: []
 };
 
 const getters = {
-  currentAssets: state => Object.keys(state.currentAssets).map(key => state.currentAssets[key]),
+  currentAssets: state => state.currentAssets,
   getAssetsByTemplateId: state => (templateId, param) => {
-    let assets = Object.keys(state.currentAssets).map(key => state.currentAssets[key]);
-    return assets.filter(item => {
+    return state.currentAssets.filter(item => {
       if (param) {
         return item.templateId === templateId &&
                item.values[param.id] &&
@@ -19,24 +18,30 @@ const getters = {
         return item.templateId === templateId;
       }
     });
-  },
-  removedAssetsList: state => state.removedAssetsList
+  }
 };
 
 const mutations = {
   setAssets: (state, assets) => { state.currentAssets = assets; },
   updateAsset: (state, { id, data }) => {
-    state.currentAssets[id].revision = data.revision;
-    state.currentAssets[id].lastUpdate = data.lastUpdate;
+    if (state.currentAssets[id]) {
+      const currentAssets = Object.assign({}, state.currentAssets);
+      currentAssets[id] = data;
+      state.currentAssets = currentAssets;
+    }
   },
-  addToRemovedAssetsList: (state, id) => { state.removedAssetsList.push(id); },
-  removeFromRemovedAssetsList: (state, id) => { state.removedAssetsList = state.removedAssetsList.filter(item => item !== id); },
-  resetRemovedAssetsList: (state) => { state.removedAssetsList = []; }
+  removeAsset: (state, id) => {
+    if (state.currentAssets[id]) {
+      const currentAssets = Object.assign({}, state.currentAssets);
+      delete currentAssets[id];
+      state.currentAssets = currentAssets;
+    }
+  }
 };
 
 const actions = {
-  async fetchAssetsByTemplatesIds ({ commit }, ids) {
-    const response = await Asset.fetchByTemplates(...ids);
+  async fetchCurrentAssets ({ commit }, id) {
+    const response = await Asset.fetchByTemplates(id);
     commit('setAssets', response);
   },
   async updateAssets ({ commit }, data) {
@@ -45,10 +50,12 @@ const actions = {
       commit('updateAsset', { id, data: response.data[id] });
     });
   },
-  toggleRemovedAssetsList ({ commit, state }, id) {
-    state.removedAssetsList.includes(id) ? commit('removeFromRemovedAssetsList', id) : commit('addToRemovedAssetsList', id);
-  },
-  resetRemovedAssetsList ({ commit }) { commit('resetRemovedAssetsList'); }
+  async deleteAssets ({ commit }, ids) {
+    const response = await Asset.delete(...ids);
+    Object.keys(response.data).forEach(id => {
+      commit('removeAsset', parseInt(id));
+    });
+  }
 };
 
 export default {

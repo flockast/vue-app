@@ -46,7 +46,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('template', ['templates']),
+    ...mapGetters('templates', ['templates']),
     filteredItems () {
       return this.filterBySearch(this.items);
     },

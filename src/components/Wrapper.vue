@@ -25,8 +25,8 @@ export default {
     Sidebar,
     PageContent
   },
-  methods: mapActions('template', ['getAllTemplates']),
-  computed: mapGetters('template', ['templates']),
+  methods: mapActions('templates', ['getAllTemplates']),
+  computed: mapGetters('templates', ['templates']),
   mixins: [ helpers ],
   created () {
     this.getAllTemplates();

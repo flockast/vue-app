@@ -2,6 +2,8 @@
 
 .container-fluid { @include wrapper-full(); }
 
+.d-flex { display: flex; }
+
 .grid { @include row-flex(); }
 
 .grid--nowrap { flex-wrap: nowrap; }

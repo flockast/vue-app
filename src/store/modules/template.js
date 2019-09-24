@@ -1,54 +1,77 @@
-import Template from '../../api/Template';
+import Asset from '../../api/Asset';
 
 const state = {
-  templates: {},
-  currentTemplateId: '',
-  currentLinkedTemplates: []
+  template: {},
+  assets: [],
+  newAssets: []
 };
 
 const getters = {
-  templates: state => Object.keys(state.templates).map(key => state.templates[key]),
-  currentTemplate: state => state.templates[state.currentTemplateId],
-  currentLinkedTemplates: state => state.currentLinkedTemplates,
-  getTemplateById: state => templateId => state.templates[templateId]
+  template: state => state.template,
+  assets: state => state.assets,
+  newAssets: state => state.newAssets
 };
 
 const actions = {
-  async getAllTemplates ({ commit }) {
-    const response = await Template.fetchAll();
-    commit('setTemplates', response);
-  },
-  changeCurrentTemplate ({ commit, state }, id) {
-    if (state.templates[id]) {
-      let linkedTemplates = [];
-      Object.keys(state.templates).forEach(key => {
-        if (!state.templates[key].params) return;
-        state.templates[key].params.forEach(param => {
-          if (
-            param.type.type === 'link' &&
-            param.type.parentCanShowMe &&
-            param.type.linkId === id
-          ) {
-            linkedTemplates.push({
-              templateId: state.templates[key].id,
-              paramId: param.id
-            });
-          }
-        });
-      });
-      commit('setCurrentTemplateId', id);
-      commit('setCurrentLinkedTemplates', linkedTemplates);
+  async changeTemplate ({ commit }, template) {
+    commit('resetNewAssets');
+    if (template) {
+      commit('setTemplate', template);
+      commit('setAssets', await Asset.fetchByTemplates(template.id));
     } else {
-      commit('setCurrentTemplateId', '');
-      commit('setCurrentLinkedTemplates', []);
+      commit('setTemplate', []);
+      commit('setAssets', []);
     }
+  },
+  addToNewAssets ({ commit, state }) {
+    let data = {
+      templateId: state.template.id,
+      values: {}
+    };
+    state.template.params.forEach(param => {
+      data.values[param.id] = '';
+    });
+    commit('addToNewAssets', data);
+  },
+  removeFromNewAssets ({ commit }, key) {
+    commit('removeFromNewAssets', key);
+  },
+  async updateAsset ({ commit }, data) {
+    let response = await Asset.update(data);
+    response.forEach(item => { commit('updateAsset', item); });
+  },
+  async createAsset ({ commit }, { key, data }) {
+    let response = await Asset.create(data);
+    response.forEach(item => {
+      commit('removeFromNewAssets', key);
+      commit('addAsset', item);
+    });
+  },
+  async removeAsset ({ commit }, data) {
+    let response = await Asset.delete(data);
+    response.forEach(item => { commit('removeAsset', item); });
   }
 };
 
 const mutations = {
-  setTemplates: (state, templates) => { state.templates = templates; },
-  setCurrentTemplateId: (state, id) => { state.currentTemplateId = id; },
-  setCurrentLinkedTemplates: (state, templates) => { state.currentLinkedTemplates = templates; }
+  setTemplate: (state, template) => { state.template = template; },
+
+  // assets
+  setAssets: (state, assets) => { state.assets = assets; },
+  addAsset: (state, asset) => { state.assets.push(asset); },
+  updateAsset: (state, asset) => {
+    const index = state.assets.findIndex(item => item.id === asset.id);
+    state.assets.splice(index, 1, asset);
+  },
+  removeAsset: (state, id) => {
+    const index = state.assets.findIndex(item => item.id === parseInt(id));
+    state.assets.splice(index, 1);
+  },
+
+  // newAssets
+  resetNewAssets: state => { state.newAssets = []; },
+  addToNewAssets: (state, data) => { state.newAssets.push(data); },
+  removeFromNewAssets (state, key) { state.newAssets.splice(key, 1); }
 };
 
 export default {
