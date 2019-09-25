@@ -25,7 +25,6 @@ const actions = {
   },
   addToNewAssets ({ commit, state }) {
     let data = {
-      templateId: state.template.id,
       values: {}
     };
     state.template.params.forEach(param => {
@@ -40,8 +39,8 @@ const actions = {
     let response = await Asset.update(data);
     response.forEach(item => { commit('updateAsset', item); });
   },
-  async createAsset ({ commit }, { key, data }) {
-    let response = await Asset.create(data);
+  async createAsset ({ commit }, { key, templateId, data }) {
+    let response = await Asset.create(templateId, data);
     response.forEach(item => {
       commit('removeFromNewAssets', key);
       commit('addAsset', item);

@@ -25,8 +25,8 @@ export default {
       return Object.keys(data.data).map(key => data.data[key]);
     });
   },
-  create (data) {
-    return Service.post('content.templates.streets.objects', {
+  create (templateId, data) {
+    return Service.post(`content.templates.${templateId}.objects`, {
       action: 'create',
       jsonModels: JSON.stringify(data)
     }, (status, data) => {

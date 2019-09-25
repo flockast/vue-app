@@ -1,6 +1,6 @@
 <template>
   <div v-if="!firstLoading" class="template-page" :class="{'is-loading': isLoading}">
-    <div v-if="notEmptyObject(localTemplate)">
+    <div v-if="!isEmpty(localTemplate)">
       <div class="title title--lg">{{ localTemplate.title }}</div>
       <Table :template="localTemplate"
              :assets="localAssets"/>

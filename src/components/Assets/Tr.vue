@@ -1,7 +1,7 @@
 <template>
   <tbody>
     <tr :class="{'is-opened': isOpen, 'is-loading': isLoading, 'is-edited': edited}">
-      <td>{{ asset.id }} - {{ asset.revision }}</td>
+      <td>{{ asset.id }}</td>
       <td v-for="(param, index) in template.params" :key="index">
         <span v-if="param.type.type === 'list'">list</span>
         <div v-else-if="param.type.type === 'boolean'" class="checkbox checkbox--readonly">
@@ -124,6 +124,7 @@ export default {
       } else { // create
         await this.createAsset({
           key: this.keyOfNewAsset,
+          templateId: this.template.id,
           data: {
             '0': { data: this.localAsset }
           }

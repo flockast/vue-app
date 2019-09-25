@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export default {
   methods: {
     readyToSearch: str => {
@@ -14,7 +16,6 @@ export default {
         "f,dult`;pbqrkvyjghcnea[wxio]sm'.z `[];',."
       );
     },
-    notEmptyObject: someObject => someObject && Object.keys(someObject).length,
-    notEmptyArray: someArray => someArray && someArray.length > 0
+    isEmpty: value => _.isEmpty(value)
   }
 };

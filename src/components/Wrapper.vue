@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <Header />
-    <div v-if="notEmptyArray(templates)" class="content-wrapper">
+    <div v-if="!isEmpty(templates)" class="content-wrapper">
       <div class="content-wrapper__sidebar">
         <Sidebar />
       </div>

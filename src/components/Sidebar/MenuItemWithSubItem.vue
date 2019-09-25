@@ -1,5 +1,5 @@
 <template>
-<li v-if="notEmptyArray(subItems)" class="sidebar-menu-list__item">
+<li v-if="!isEmpty(subItems)" class="sidebar-menu-list__item">
     <span class="sidebar-menu-list-item"
           :class="{'is-opened': isOpened || isFounded}"
           @click="handleClickItem">
