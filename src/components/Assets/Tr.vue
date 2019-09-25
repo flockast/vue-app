@@ -76,7 +76,6 @@
 <script>
 import _ from 'lodash';
 import { mapActions } from 'vuex';
-import helpers from '../../mixins/helpers';
 
 export default {
   props: {
@@ -92,7 +91,6 @@ export default {
       localAsset: {}
     };
   },
-  mixins: [ helpers ],
   methods: {
     ...mapActions('template', ['updateAsset', 'createAsset', 'removeAsset', 'removeFromNewAssets']),
     initial () {
