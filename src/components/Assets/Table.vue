@@ -28,16 +28,16 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import Tr from './Tr';
+import Tr from './TableTr';
 
 export default {
   props: {
     template: [Object],
     assets: [Array]
   },
-  computed: mapGetters('template', ['newAssets']),
+  computed: mapGetters('assets', ['newAssets']),
   methods: {
-    ...mapActions('template', ['addToNewAssets']),
+    ...mapActions('assets', ['addToNewAssets']),
     handleClickAddRow () {
       this.addToNewAssets();
     }

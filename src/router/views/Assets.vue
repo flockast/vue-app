@@ -25,28 +25,35 @@ export default {
       localAssets: []
     };
   },
-  beforeRouteUpdate ({ params }, from, next) {
-    this.isLoading = true;
-    this.getContent(params.id);
-    next();
-  },
   mixins: [ helpers ],
   computed: {
-    ...mapGetters('templates', ['getTemplateById']),
-    ...mapGetters('template', ['template', 'assets'])
+    ...mapGetters({ assets: 'assets/all' }),
+    template () {
+      return this.$store.getters['templates/getTemplateById'](this.$route.params.id);
+    }
+  },
+  watch: {
+    template () {
+      this.isLoading = true;
+      this.initial();
+    }
   },
   methods: {
-    ...mapActions('template', ['changeTemplate']),
-    async getContent (id) {
-      await this.changeTemplate(this.getTemplateById(id));
+    ...mapActions({ fetchAssets: 'assets/fetchAssets' }),
+    ...mapActions({ resetNewAssets: 'assets/resetNewAssets' }),
+    ...mapActions({ resetLinkedAssets: 'linkedAssets/resetAllAssets' }),
+    async initial () {
+      this.resetLinkedAssets();
+      this.resetNewAssets();
+      if (!this.template) return;
+      await this.fetchAssets(this.template);
       this.localTemplate = this.template;
       this.localAssets = this.assets;
       this.isLoading = false;
     }
   },
-  async created () {
-    await this.getContent(this.$route.params.id);
-    this.firstLoading = false;
+  created () {
+    this.initial().finally(() => { this.firstLoading = false; });
   },
   components: {
     Table

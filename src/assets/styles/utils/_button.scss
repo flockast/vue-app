@@ -39,6 +39,7 @@
     }
   }
   &--danger {
+    position: relative;
     border-color: $color-danger;
     color: $color-danger;
     &:focus {
@@ -48,5 +49,12 @@
     &:hover {
       background-color: $color-danger-lighter;
     }
+    &.is-ready {
+      background-color: $color-danger;
+      color: white;
+    }
+  }
+  &__icon {
+    margin-right: .4rem;
   }
 }

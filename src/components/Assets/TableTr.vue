@@ -1,6 +1,6 @@
 <template>
   <tbody>
-    <tr :class="{'is-opened': isOpen, 'is-loading': isLoading, 'is-edited': edited}">
+    <tr :class="{'is-opened': isOpen, 'is-loading': isLoading, 'is-edited': isEdited}">
       <td>{{ asset.id }}</td>
       <td v-for="(param, index) in template.params" :key="index">
         <span v-if="param.type.type === 'list'">list</span>
@@ -11,13 +11,13 @@
         <input v-else :value="asset.values[param.id]" class="input input--readonly" readonly/>
       </td>
       <td>
-        <div class="table-options">
-          <div class="table-options__item">
+        <div class="options options--right">
+          <div class="options__item">
             <button
-                class="table-option-btn table-option-btn--open"
+                class="option-btn option-btn--open"
                 @click="toggleSub"
                 :class="{'is-opened': isOpen}">
-              <i class="fas fa-chevron-down table-option-btn__icon"></i>
+              <i class="fas fa-chevron-down option-btn__icon"></i>
             </button>
           </div>
         </div>
@@ -54,9 +54,22 @@
               </tr>
               <tr>
                 <td :colspan="2">
-                  <div class="d-flex">
-                    <button class="button button--success button--full button--pull" @click="handleClickSave"><i class="far fa-save"></i> Сохранить</button>
-                    <button class="button button--danger button--full" @click="handleClickRemove"><i class="far fa-trash-alt"></i> Удалить</button>
+                  <div class="options">
+                    <div class="options__item">
+                      <button class="option-btn option-btn--remove" :class="{'is-ready': isReadyToRemove}" @click="handleClickRemove">
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                    </div>
+                    <div class="options__item">
+                      <button v-if="isEdited" class="option-btn option-btn--save" @click="handleClickSave">
+                        <i class="far fa-save"></i>
+                      </button>
+                    </div>
+                    <div class="options__item">
+                      <button v-if="isEdited" class="option-btn option-btn--clear" @click="handleClickClear">
+                        <i class="fas fa-broom"></i>
+                      </button>
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -65,7 +78,7 @@
           </div>
         </div>
         <div class="sub-col sub-col--full">
-
+          <LinkedTables :asset="asset" :template="template"/>
         </div>
       </div>
     </td>
@@ -76,6 +89,7 @@
 <script>
 import _ from 'lodash';
 import { mapActions } from 'vuex';
+import LinkedTables from './LinkedTables';
 
 export default {
   props: {
@@ -87,18 +101,19 @@ export default {
     return {
       isOpen: false,
       isLoading: false,
-      edited: false,
+      isEdited: false,
+      isReadyToRemove: false,
       localAsset: {}
     };
   },
   methods: {
-    ...mapActions('template', ['updateAsset', 'createAsset', 'removeAsset', 'removeFromNewAssets']),
+    ...mapActions('assets', ['updateAsset', 'createAsset', 'removeAsset', 'removeFromNewAssets']),
     initial () {
       this.asset.values = this.asset.values || {};
       this.localAsset = _.cloneDeep(this.asset);
       // open asset - if it's a new asset
       this.isOpen = !_.isUndefined(this.keyOfNewAsset);
-      this.edited = false;
+      this.isEdited = false;
     },
     toggleSub () {
       this.isOpen = !this.isOpen;
@@ -107,11 +122,15 @@ export default {
       let keys = Object.keys(this.localAsset.values);
       for (let i = 0; i < keys.length; i++) {
         if (this.localAsset.values[keys[i]] !== this.asset.values[keys[i]]) {
-          this.edited = true;
+          this.isEdited = true;
           return;
         }
       }
-      this.edited = false;
+      this.isEdited = false;
+    },
+    handleClickClear () {
+      this.localAsset = _.cloneDeep(this.asset);
+      this.isEdited = false;
     },
     async handleClickSave () {
       this.isLoading = true;
@@ -131,13 +150,17 @@ export default {
       this.isLoading = false;
     },
     async handleClickRemove () {
+      if (!this.isReadyToRemove) {
+        this.isReadyToRemove = !this.isReadyToRemove;
+        return;
+      }
+      this.isLoading = true;
       if (_.isUndefined(this.keyOfNewAsset)) { // remove Asset
-        this.isLoading = true;
         await this.removeAsset([this.localAsset.id]);
-        this.isLoading = false;
       } else { // remove from New Assets List
         this.removeFromNewAssets(this.keyOfNewAsset);
       }
+      this.isLoading = false;
     }
   },
   watch: {
@@ -147,6 +170,9 @@ export default {
   },
   created () {
     this.initial();
+  },
+  components: {
+    LinkedTables
   }
 };
 </script>

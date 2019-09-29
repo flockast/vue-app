@@ -17,6 +17,15 @@ export default {
       return Object.keys(data.data).map(key => data.data[key]);
     });
   },
+  fetchByParam (templateId, paramId, paramValue) {
+    return Service.post(`content.templates.${templateId}.objects`, {
+      jsonQuery: JSON.stringify({
+        [`values.${paramId}`]: paramValue
+      })
+    }, (status, data) => {
+      return Object.keys(data.data).map(key => data.data[key]);
+    });
+  },
   update (data) {
     return Service.post('content.objects', {
       action: 'update',

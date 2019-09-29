@@ -25,11 +25,11 @@ export default {
     Sidebar,
     PageContent
   },
-  methods: mapActions('templates', ['getAllTemplates']),
-  computed: mapGetters('templates', ['templates']),
+  methods: mapActions({ fetchAllTemplates: 'templates/fetchAll' }),
+  computed: mapGetters({ templates: 'templates/all' }),
   mixins: [ helpers ],
   created () {
-    this.getAllTemplates();
+    this.fetchAllTemplates();
   }
 };
 </script>
