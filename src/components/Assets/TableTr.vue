@@ -140,7 +140,6 @@ export default {
         });
       } else { // create
         await this.createAsset({
-          key: this.keyOfNewAsset,
           templateId: this.template.id,
           data: {
             '0': { data: this.localAsset }

@@ -21,7 +21,7 @@ const actions = {
     let response = await Asset.update(data);
     response.forEach(item => { commit('updateAsset', item); });
   },
-  async createAsset ({ commit }, { key, templateId, data }) {
+  async createAsset ({ commit }, { templateId, data }) {
     let response = await Asset.create(templateId, data);
     response.forEach(item => { commit('addAsset', item); });
   },
