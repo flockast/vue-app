@@ -1,12 +1,17 @@
 <template>
-  <div v-if="!firstLoading" class="template-page" :class="{'is-loading': isLoading}">
-    <div v-if="!isEmpty(localTemplate)">
-      <div class="title title--lg">{{ localTemplate.title }}</div>
-      <Table :template="localTemplate"
-             :assets="localAssets"/>
-    </div>
-    <div v-else>
-      <span>Такого шаблона не существует</span>
+  <div v-if="firstLoading">
+    Загрузка...
+  </div>
+  <div v-else>
+    <div class="template-page" :class="{'is-loading': isLoading}">
+      <div v-if="!isEmpty(localTemplate)">
+        <div class="title title--lg">{{ localTemplate.title }}</div>
+        <Table :template="localTemplate"
+               :assets="localAssets"/>
+      </div>
+      <div v-else>
+        <span>Такого шаблона не существует</span>
+      </div>
     </div>
   </div>
 </template>
