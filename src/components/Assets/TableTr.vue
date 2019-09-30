@@ -107,7 +107,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions('assets', ['updateAsset', 'createAsset', 'removeAsset', 'removeFromNewAssets']),
+    ...mapActions('assets', ['updateAsset', 'createAsset', 'removeAsset']),
     initial () {
       this.asset.values = this.asset.values || {};
       this.localAsset = _.cloneDeep(this.asset);
@@ -146,6 +146,7 @@ export default {
             '0': { data: this.localAsset }
           }
         });
+        this.$emit('removeFromNewAsset', this.keyOfNewAsset);
       }
       this.isLoading = false;
     },
@@ -158,7 +159,7 @@ export default {
       if (_.isUndefined(this.keyOfNewAsset)) { // remove Asset
         await this.removeAsset([this.localAsset.id]);
       } else { // remove from New Assets List
-        this.removeFromNewAssets(this.keyOfNewAsset);
+        this.$emit('removeFromNewAsset', this.keyOfNewAsset);
       }
       this.isLoading = false;
     }

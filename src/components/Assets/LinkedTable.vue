@@ -74,7 +74,7 @@ export default {
     },
     removeFromNewAsset (key) {
       const index = this.newAssets.findIndex(item => item.newKey === key);
-      this.newAssets.splice(index, 1);
+      if (index !== -1) this.newAssets.splice(index, 1);
     }
   },
   components: {

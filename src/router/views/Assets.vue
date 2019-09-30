@@ -45,11 +45,9 @@ export default {
   },
   methods: {
     ...mapActions({ fetchAssets: 'assets/fetchAssets' }),
-    ...mapActions({ resetNewAssets: 'assets/resetNewAssets' }),
     ...mapActions({ resetLinkedAssets: 'linkedAssets/resetAllAssets' }),
     async initial () {
       this.resetLinkedAssets();
-      this.resetNewAssets();
       if (!this.template) return;
       await this.fetchAssets(this.template);
       this.localTemplate = this.template;

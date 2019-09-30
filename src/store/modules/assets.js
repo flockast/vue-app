@@ -2,8 +2,7 @@ import Asset from '../../api/Asset';
 
 const state = {
   template: {},
-  assets: [],
-  newAssets: []
+  assets: []
 };
 
 const getters = {
@@ -18,29 +17,13 @@ const actions = {
     commit('setAssets', response);
     commit('setTemplate', template);
   },
-  addToNewAssets ({ commit, state }) {
-    let data = {
-      values: {}
-    };
-    state.template.params.forEach(param => {
-      data.values[param.id] = '';
-    });
-    commit('addToNewAssets', data);
-  },
-  removeFromNewAssets ({ commit }, key) {
-    commit('removeFromNewAssets', key);
-  },
-  resetNewAssets ({ commit }) { commit('resetNewAssets'); },
   async updateAsset ({ commit }, data) {
     let response = await Asset.update(data);
     response.forEach(item => { commit('updateAsset', item); });
   },
   async createAsset ({ commit }, { key, templateId, data }) {
     let response = await Asset.create(templateId, data);
-    response.forEach(item => {
-      commit('removeFromNewAssets', key);
-      commit('addAsset', item);
-    });
+    response.forEach(item => { commit('addAsset', item); });
   },
   async removeAsset ({ commit }, data) {
     let response = await Asset.delete(data);
@@ -50,8 +33,6 @@ const actions = {
 
 const mutations = {
   setTemplate: (state, template) => { state.template = template; },
-
-  // assets
   setAssets: (state, assets) => { state.assets = assets; },
   addAsset: (state, asset) => { state.assets.push(asset); },
   updateAsset: (state, asset) => {
@@ -61,12 +42,7 @@ const mutations = {
   removeAsset: (state, id) => {
     const index = state.assets.findIndex(item => item.id === parseInt(id));
     if (index !== -1) state.assets.splice(index, 1);
-  },
-
-  // newAssets
-  resetNewAssets: state => { state.newAssets = []; },
-  addToNewAssets: (state, data) => { state.newAssets.push(data); },
-  removeFromNewAssets (state, key) { state.newAssets.splice(key, 1); }
+  }
 };
 
 export default {

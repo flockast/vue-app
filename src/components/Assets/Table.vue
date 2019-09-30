@@ -12,34 +12,53 @@
           :asset="asset"
           :template="template"
           :key="asset.id"/>
-      <Tr v-for="(asset, index) in newAssets"
+      <Tr v-for="asset in newAssets"
           :asset="asset"
           :template="template"
-          :keyOfNewAsset="index"
-          :key="index"/>
-      <tr>
-        <td :colspan="template.params.length + 2">
-          <button class="button button--full button--success" @click="handleClickAddRow"><i class="fas fa-plus"></i> Добавить</button>
-        </td>
-      </tr>
+          :keyOfNewAsset="asset.newKey"
+          @removeFromNewAsset="removeFromNewAsset"
+          :key="asset.newKey"/>
+      <tbody>
+        <tr>
+          <td :colspan="template.params.length + 2">
+            <button class="button button--full button--success" @click="handleClickAddRow"><i class="fas fa-plus"></i> Добавить</button>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 import Tr from './TableTr';
 
 export default {
+  data () {
+    return {
+      newAssets: [],
+      keyOfNewAsset: 0
+    };
+  },
   props: {
     template: [Object],
     assets: [Array]
   },
-  computed: mapGetters('assets', ['newAssets']),
   methods: {
-    ...mapActions('assets', ['addToNewAssets']),
     handleClickAddRow () {
-      this.addToNewAssets();
+      let data = {
+        newKey: this.keyOfNewAsset,
+        values: {}
+      };
+      this.template.params.forEach(param => {
+        data.values[param.id] = '';
+      });
+      data.values[this.paramId] = this.parentAssetId;
+      this.newAssets.push(data);
+      this.keyOfNewAsset++;
+    },
+    removeFromNewAsset (key) {
+      const index = this.newAssets.findIndex(item => item.newKey === key);
+      if (index !== -1) this.newAssets.splice(index, 1);
     }
   },
   components: {
