@@ -7,6 +7,7 @@
   background: none;
   color: $color-main;
   font-size: 1.4rem;
+  text-decoration: none;
   appearance: none;
   cursor: pointer;
   &:focus {
@@ -26,6 +27,9 @@
   }
   &--pull {
     margin-right: 1rem;
+  }
+  &--pull-back {
+    margin-left: 1rem;
   }
   &--success {
     border-color: $color-success;

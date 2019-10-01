@@ -61,6 +61,11 @@ export default {
       if (index !== -1) this.newAssets.splice(index, 1);
     }
   },
+  watch: {
+    template () {
+      this.newAssets = [];
+    }
+  },
   components: {
     Tr
   }

@@ -5,7 +5,12 @@
   <div v-else>
     <div class="template-page" :class="{'is-loading': isLoading}">
       <div v-if="!isEmpty(localTemplate)">
-        <div class="title title--lg">{{ localTemplate.title }}</div>
+        <div class="">
+          <div class="title title--lg">{{ localTemplate.title }}</div>
+          <router-link class="button mb-4" :to="{name: 'template', params: {id: localTemplate.id}}" :exact="true">
+            <i class="fas fa-edit"></i> Редактировать шаблон
+          </router-link>
+        </div>
         <Table :template="localTemplate"
                :assets="localAssets"/>
       </div>
