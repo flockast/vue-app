@@ -7,8 +7,7 @@ const state = {
 
 const getters = {
   template: state => state.template,
-  all: state => state.assets,
-  newAssets: state => state.newAssets
+  all: state => state.assets
 };
 
 const actions = {

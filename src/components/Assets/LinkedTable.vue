@@ -1,5 +1,5 @@
 <template>
-  <div class="table-wrapper">
+  <div v-if="next" class="table-wrapper">
     <table class="table">
       <thead>
         <tr>
@@ -20,12 +20,14 @@
                      :template="template"
                      :parentAssetId="parentAssetId"
                      :params="params"
+                     :linkAssets="linkAssets"
                      :key="asset.id"/>
       <LinkedTableTr v-for="asset in newAssets"
                      :asset="asset"
                      :template="template"
                      :parentAssetId="parentAssetId"
                      :params="params"
+                     :linkAssets="linkAssets"
                      :keyOfNewAsset="asset.newKey"
                      @removeFromNewAsset="removeFromNewAsset"
                      :key="asset.newKey"/>
@@ -39,13 +41,17 @@
 </template>
 
 <script>
+import _ from 'lodash';
+import Asset from '../../api/Asset';
 import LinkedTableTr from './LinkedTableTr';
 
 export default {
   data () {
     return {
+      linkAssets: [],
       newAssets: [],
-      keyOfNewAsset: 0
+      keyOfNewAsset: 0,
+      next: false
     };
   },
   props: {
@@ -60,6 +66,13 @@ export default {
     }
   },
   methods: {
+    async getLinkAssets () {
+      // get linkAssets for selects
+      let linkAssets = [];
+      const paramsLink = this.template.params.filter(param => param.type.type === 'link' && param.id !== this.paramId);
+      if (!_.isEmpty(paramsLink)) linkAssets = await Asset.fetchByTemplates(...paramsLink.map(item => item.type.linkId));
+      this.linkAssets = linkAssets;
+    },
     handleClickAddRow () {
       let data = {
         newKey: this.keyOfNewAsset,
@@ -76,6 +89,9 @@ export default {
       const index = this.newAssets.findIndex(item => item.newKey === key);
       if (index !== -1) this.newAssets.splice(index, 1);
     }
+  },
+  created () {
+    this.getLinkAssets().finally(() => { this.next = true; });
   },
   components: {
     LinkedTableTr

@@ -3,11 +3,19 @@
     <tr :class="{'is-opened': isOpen, 'is-loading': isLoading, 'is-edited': isEdited}">
       <td>{{ asset.id }}</td>
       <td v-for="(param, index) in template.params" :key="index">
-        <span v-if="param.type.type === 'list'">list</span>
-        <div v-else-if="param.type.type === 'boolean'" class="checkbox checkbox--readonly">
+        <div v-if="param.type.type === 'boolean'" class="checkbox checkbox--readonly">
           <input type="checkbox" class="checkbox__input" :checked="asset.values[param.id]" readonly onclick="return false;">
           <div class="checkbox__control"></div>
         </div>
+        <span v-else-if="param.type.type === 'link'">
+          {{
+            getTitleByLinkAsset (
+              linkAssets.find(
+                item => item.templateId === param.type.linkId && item.id === asset.values[param.id]
+              )
+            )
+          }}
+        </span>
         <input v-else :value="asset.values[param.id]" class="input input--readonly" readonly/>
       </td>
       <td>
@@ -45,6 +53,16 @@
                            v-model="localAsset.values[param.id]">
                     <div class="checkbox__control"></div>
                   </div>
+                  <select v-else-if="param.type.type === 'link'" class="select select--full"
+                          @change="handleChangeInput"
+                          v-model="localAsset.values[param.id]">
+                    <option v-for="linkAsset in linkAssets.filter(item => item.templateId === param.type.linkId)"
+                            :value="linkAsset.id"
+                            :selected="asset.values[param.id] === linkAsset.id"
+                            :key="linkAsset.id">
+                      {{ getTitleByLinkAsset(linkAsset) }}
+                    </option>
+                  </select>
                   <span v-else>
                     <input type="text" class="input input--full"
                            @input="handleChangeInput"
@@ -94,6 +112,7 @@ import LinkedTables from './LinkedTables';
 export default {
   props: {
     asset: [ Object ],
+    linkAssets: [ Array ],
     template: [ Object ],
     keyOfNewAsset: [ Number ]
   },
@@ -161,6 +180,15 @@ export default {
         this.$emit('removeFromNewAsset', this.keyOfNewAsset);
       }
       this.isLoading = false;
+    },
+    getTitleByLinkAsset (asset) {
+      if (!asset) return '';
+      if (asset.values) {
+        if (asset.values.title) return asset.values.title;
+        if (asset.values.code) return asset.values.code;
+      } else {
+        return asset.id;
+      }
     }
   },
   watch: {

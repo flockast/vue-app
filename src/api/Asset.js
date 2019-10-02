@@ -8,6 +8,7 @@ export default {
   },
   fetchByTemplates (...ids) {
     return Service.post('content.objects', {
+      all: 1,
       jsonQuery: JSON.stringify({
         templateId: {
           '$in': [...ids]
@@ -19,6 +20,7 @@ export default {
   },
   fetchByParam (templateId, paramId, paramValue) {
     return Service.post(`content.templates.${templateId}.objects`, {
+      all: 1,
       jsonQuery: JSON.stringify({
         [`values.${paramId}`]: paramValue
       })

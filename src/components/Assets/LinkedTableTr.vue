@@ -9,6 +9,16 @@
                  v-model="localAsset.values[param.id]">
           <div class="checkbox__control"></div>
         </div>
+        <select v-else-if="param.type.type === 'link'" class="select select--full"
+                @change="handleChangeInput"
+                v-model="localAsset.values[param.id]">
+          <option v-for="linkAsset in linkAssets.filter(item => item.templateId === param.type.linkId)"
+                  :value="linkAsset.id"
+                  :selected="asset.values[param.id] === linkAsset.id"
+                  :key="linkAsset.id">
+            {{ getTitleByLinkAsset(linkAsset) }}
+          </option>
+        </select>
         <input v-else type="text" class="input input--full"
                @input="handleChangeInput"
                v-model="localAsset.values[param.id]">
@@ -54,7 +64,8 @@ export default {
     template: [ Object ],
     parentAssetId: [ Number ],
     params: [ Array ],
-    keyOfNewAsset: [ Number ]
+    keyOfNewAsset: [ Number ],
+    linkAssets: [ Array ]
   },
   methods: {
     ...mapActions('linkedAssets', ['updateAsset', 'removeAsset', 'createAsset']),
@@ -114,6 +125,15 @@ export default {
         this.$emit('removeFromNewAsset', this.keyOfNewAsset);
       }
       this.isLoading = false;
+    },
+    getTitleByLinkAsset (asset) {
+      if (!asset) return '';
+      if (asset.values) {
+        if (asset.values.title) return asset.values.title;
+        if (asset.values.code) return asset.values.code;
+      } else {
+        return asset.id;
+      }
     }
   },
   watch: {

@@ -1,0 +1,16 @@
+.select {
+  display: inline-block;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  background: white;
+  height: 3.1rem;
+  font-size: 1.4rem;
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px $color-main-light;
+    border-color: $color-main-light;
+  }
+  &--full {
+    width: 100%;
+  }
+}

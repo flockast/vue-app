@@ -9,12 +9,14 @@
         </tr>
       </thead>
       <Tr v-for="asset in assets"
-          :asset="asset"
           :template="template"
+          :link-assets="linkAssets"
+          :asset="asset"
           :key="asset.id"/>
       <Tr v-for="asset in newAssets"
-          :asset="asset"
           :template="template"
+          :link-assets="linkAssets"
+          :asset="asset"
           :keyOfNewAsset="asset.newKey"
           @removeFromNewAsset="removeFromNewAsset"
           :key="asset.newKey"/>
@@ -40,8 +42,9 @@ export default {
     };
   },
   props: {
-    template: [Object],
-    assets: [Array]
+    template: [ Object ],
+    linkAssets: [ Array ],
+    assets: [ Array ]
   },
   methods: {
     handleClickAddRow () {
