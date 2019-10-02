@@ -13,12 +13,8 @@ class Service {
     });
     service.interceptors.request.use((config) => {
       const token = store.getters['user/token'];
-      if (config.params === undefined) {
-        config.params = {};
-      }
-      if (token) {
-        config.params['setCookie[admin_session]'] = token;
-      }
+      config.params = config.params || {};
+      if (token) config.params['setCookie[admin_session]'] = token;
       console.log(config);
       return config;
     }, function (err) {

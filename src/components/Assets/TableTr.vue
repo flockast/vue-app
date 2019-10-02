@@ -1,6 +1,6 @@
 <template>
   <tbody>
-    <tr :class="{'is-opened': isOpen, 'is-loading': isLoading, 'is-edited': isEdited}">
+    <tr :class="{'is-opened': isOpen, 'is-loading': isLoading, 'is-edited': !isEmpty(editedValues)}">
       <td>{{ asset.id }}</td>
       <td v-for="(param, index) in template.params" :key="index">
         <div v-if="param.type.type === 'boolean'" class="checkbox checkbox--readonly">
@@ -16,6 +16,7 @@
             )
           }}
         </span>
+        <span v-else-if="param.type.type === 'list'">list</span>
         <input v-else :value="asset.values[param.id]" class="input input--readonly" readonly/>
       </td>
       <td>
@@ -44,18 +45,20 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(param, index) in template.params" :key="index">
+              <tr v-for="(param, index) in template.params"
+                  :class="{'is-edited': editedValues.includes(param.id)}"
+                  :key="index">
                 <td>{{ param.title }}</td>
                 <td>
                   <div v-if="param.type.type === 'boolean'" class="checkbox">
                     <input type="checkbox" class="checkbox__input"
-                           @change="handleChangeInput"
-                           v-model="localAsset.values[param.id]">
+                           v-model="localAsset.values[param.id]"
+                           @change="handleChangeInput">
                     <div class="checkbox__control"></div>
                   </div>
                   <select v-else-if="param.type.type === 'link'" class="select select--full"
-                          @change="handleChangeInput"
-                          v-model="localAsset.values[param.id]">
+                          v-model="localAsset.values[param.id]"
+                          @change="handleChangeInput">
                     <option v-for="linkAsset in linkAssets.filter(item => item.templateId === param.type.linkId)"
                             :value="linkAsset.id"
                             :selected="asset.values[param.id] === linkAsset.id"
@@ -63,11 +66,12 @@
                       {{ getTitleByLinkAsset(linkAsset) }}
                     </option>
                   </select>
-                  <span v-else>
-                    <input type="text" class="input input--full"
-                           @input="handleChangeInput"
-                           v-model="localAsset.values[param.id]">
-                  </span>
+                  <textarea v-else-if="param.type.type === 'list'" class="input input--full"
+                            v-model="localAsset.values[param.id]"
+                            @input="handleChangeInput"></textarea>
+                  <input v-else type="text" class="input input--full"
+                         v-model="localAsset.values[param.id]"
+                         @input="handleChangeInput">
                 </td>
               </tr>
               <tr>
@@ -79,12 +83,12 @@
                       </button>
                     </div>
                     <div class="options__item">
-                      <button v-if="isEdited" class="option-btn option-btn--save" @click="handleClickSave">
+                      <button v-if="!isEmpty(editedValues)" class="option-btn option-btn--save" @click="handleClickSave">
                         <i class="far fa-save"></i>
                       </button>
                     </div>
                     <div class="options__item">
-                      <button v-if="isEdited" class="option-btn option-btn--clear" @click="handleClickClear">
+                      <button v-if="!isEmpty(editedValues)" class="option-btn option-btn--clear" @click="handleClickClear">
                         <i class="fas fa-broom"></i>
                       </button>
                     </div>
@@ -106,6 +110,7 @@
 
 <script>
 import _ from 'lodash';
+import helpers from '../../mixins/helpers';
 import { mapActions } from 'vuex';
 import LinkedTables from './LinkedTables';
 
@@ -120,36 +125,55 @@ export default {
     return {
       isOpen: false,
       isLoading: false,
-      isEdited: false,
       isReadyToRemove: false,
+      editedValues: [],
       localAsset: {}
     };
   },
+  mixins: [ helpers ],
   methods: {
     ...mapActions('assets', ['updateAsset', 'createAsset', 'removeAsset']),
     initial () {
       this.asset.values = this.asset.values || {};
       this.localAsset = _.cloneDeep(this.asset);
+      // default list object -> string
+      const listParams = this.template.params.filter(param => param.type.type === 'list');
+      listParams.forEach(param => {
+        this.localAsset.values[param.id] = JSON.stringify(this.localAsset.values[param.id]);
+      });
       // open asset - if it's a new asset
       this.isOpen = !_.isUndefined(this.keyOfNewAsset);
-      this.isEdited = false;
+      this.editedValues = [];
     },
     toggleSub () {
       this.isOpen = !this.isOpen;
     },
     handleChangeInput () {
-      let keys = Object.keys(this.localAsset.values);
+      const keys = Object.keys(this.localAsset.values);
       for (let i = 0; i < keys.length; i++) {
-        if (this.localAsset.values[keys[i]] !== this.asset.values[keys[i]]) {
-          this.isEdited = true;
-          return;
+        const param = this.template.params.find(item => item.id === keys[i]);
+        // reset for empty values
+        this.localAsset.values[keys[i]] = this.localAsset.values[keys[i]] || undefined;
+        if (param.type.type === 'list') {
+          // check like a object
+          if (this.localAsset.values[keys[i]] !== JSON.stringify(this.asset.values[keys[i]])) {
+            if (!this.editedValues.includes(keys[i])) this.editedValues.push(keys[i]);
+          } else {
+            this.editedValues = this.editedValues.filter(item => item !== keys[i]);
+          }
+        } else {
+          // check others types (number, string, boolean)
+          if (String(this.localAsset.values[keys[i]]) !== String(this.asset.values[keys[i]])) {
+            if (!this.editedValues.includes(keys[i])) this.editedValues.push(keys[i]);
+          } else {
+            this.editedValues = this.editedValues.filter(item => item !== keys[i]);
+          }
         }
       }
-      this.isEdited = false;
     },
     handleClickClear () {
       this.localAsset = _.cloneDeep(this.asset);
-      this.isEdited = false;
+      this.editedValues = [];
     },
     async handleClickSave () {
       this.isLoading = true;

@@ -5,25 +5,34 @@
   padding: .6rem 1.5rem;
   font-size: 1.4rem;
   appearance: none;
+
   &:focus {
     outline: none;
     box-shadow: 0 0 0 1px $color-main-light;
     border-color: $color-main-light;
   }
+
   &::placeholder {
     font-size: 1.2rem;
     color: $color-font-grey;
   }
+
   &--full {
     width: 100%;
   }
+
   &--readonly {
     padding: 0;
     border-color: transparent;
     background: transparent;
+
     &:focus {
       border-color: transparent;
       box-shadow: none;
     }
   }
+}
+
+textarea.input {
+  resize: vertical;
 }
