@@ -134,6 +134,8 @@ export default {
     font-size: 1.4rem;
     position: relative;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
     z-index: 2;
   }
   &__toggle {

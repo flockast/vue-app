@@ -79,15 +79,14 @@ export default {
         values: {}
       };
       this.template.params.forEach(param => {
-        data.values[param.id] = '';
+        data.values[param.id] = undefined;
       });
       data.values[this.paramId] = this.parentAssetId;
       this.newAssets.push(data);
       this.keyOfNewAsset++;
     },
     removeFromNewAsset (key) {
-      const index = this.newAssets.findIndex(item => item.newKey === key);
-      if (index !== -1) this.newAssets.splice(index, 1);
+      this.newAssets = this.newAssets.filter(item => item.newKey !== key);
     }
   },
   created () {

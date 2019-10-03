@@ -1,6 +1,18 @@
 <template>
   <tbody>
     <tr :class="{'is-opened': isOpen, 'is-loading': isLoading, 'is-edited': !isEmpty(editedValues)}">
+      <td>
+        <div class="options">
+          <div class="options__item">
+            <button
+                class="option-btn option-btn--open"
+                @click="toggleSub"
+                :class="{'is-opened': isOpen}">
+              <i class="fas fa-chevron-down option-btn__icon"></i>
+            </button>
+          </div>
+        </div>
+      </td>
       <td>{{ asset.id }}</td>
       <td v-for="(param, index) in template.params" :key="index">
         <div v-if="param.type.type === 'boolean'" class="checkbox checkbox--readonly">
@@ -18,18 +30,6 @@
         </span>
         <span v-else-if="param.type.type === 'list'">list</span>
         <input v-else :value="asset.values[param.id]" class="input input--readonly" readonly/>
-      </td>
-      <td>
-        <div class="options options--right">
-          <div class="options__item">
-            <button
-                class="option-btn option-btn--open"
-                @click="toggleSub"
-                :class="{'is-opened': isOpen}">
-              <i class="fas fa-chevron-down option-btn__icon"></i>
-            </button>
-          </div>
-        </div>
       </td>
     </tr>
     <tr v-if="isOpen" class="sub" :class="{'is-loading': isLoading}">
@@ -134,15 +134,18 @@ export default {
   methods: {
     ...mapActions('assets', ['updateAsset', 'createAsset', 'removeAsset']),
     initial () {
+      this.initialAllData();
+      // open asset - if it's a new asset
+      this.isOpen = !_.isUndefined(this.keyOfNewAsset);
+    },
+    initialAllData () {
       this.asset.values = this.asset.values || {};
       this.localAsset = _.cloneDeep(this.asset);
-      // default list object -> string
+      // default list object convert to string
       const listParams = this.template.params.filter(param => param.type.type === 'list');
       listParams.forEach(param => {
         this.localAsset.values[param.id] = JSON.stringify(this.localAsset.values[param.id]);
       });
-      // open asset - if it's a new asset
-      this.isOpen = !_.isUndefined(this.keyOfNewAsset);
       this.editedValues = [];
     },
     toggleSub () {
@@ -157,23 +160,36 @@ export default {
         if (param.type.type === 'list') {
           // check like a object
           if (this.localAsset.values[keys[i]] !== JSON.stringify(this.asset.values[keys[i]])) {
-            if (!this.editedValues.includes(keys[i])) this.editedValues.push(keys[i]);
+            this.addToEditedValues(keys[i]);
           } else {
-            this.editedValues = this.editedValues.filter(item => item !== keys[i]);
+            this.removeFromEditedValues(keys[i]);
           }
-        } else {
-          // check others types (number, string, boolean)
-          if (String(this.localAsset.values[keys[i]]) !== String(this.asset.values[keys[i]])) {
-            if (!this.editedValues.includes(keys[i])) this.editedValues.push(keys[i]);
+        } else if (param.type.type === 'boolean') {
+          // check like a boolean
+          if (this.localAsset.values[keys[i]] !== this.asset.values[keys[i]]) {
+            this.addToEditedValues(keys[i]);
           } else {
-            this.editedValues = this.editedValues.filter(item => item !== keys[i]);
+            this.removeFromEditedValues(keys[i]);
+          }
+          this.localAsset.values[keys[i]] = this.localAsset.values[keys[i]] || false;
+        } else {
+          // check others types (number, string)
+          if (String(this.localAsset.values[keys[i]]) !== String(this.asset.values[keys[i]])) {
+            this.addToEditedValues(keys[i]);
+          } else {
+            this.removeFromEditedValues(keys[i]);
           }
         }
       }
     },
+    addToEditedValues (value) {
+      if (!this.editedValues.includes(value)) this.editedValues.push(value);
+    },
+    removeFromEditedValues (value) {
+      this.editedValues = this.editedValues.filter(item => item !== value);
+    },
     handleClickClear () {
-      this.localAsset = _.cloneDeep(this.asset);
-      this.editedValues = [];
+      this.initialAllData();
     },
     async handleClickSave () {
       this.isLoading = true;
@@ -217,7 +233,7 @@ export default {
   },
   watch: {
     asset () {
-      this.initial();
+      this.initialAllData();
     }
   },
   created () {

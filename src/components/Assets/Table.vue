@@ -3,9 +3,9 @@
     <table class="table">
       <thead>
         <tr>
+          <th></th>
           <th>id</th>
           <th v-for="(param, index) in template.params" :key="index">{{ param.title }}</th>
-          <th></th>
         </tr>
       </thead>
       <Tr v-for="asset in assets"
@@ -53,15 +53,13 @@ export default {
         values: {}
       };
       this.template.params.forEach(param => {
-        data.values[param.id] = '';
+        data.values[param.id] = undefined;
       });
-      data.values[this.paramId] = this.parentAssetId;
       this.newAssets.push(data);
       this.keyOfNewAsset++;
     },
     removeFromNewAsset (key) {
-      const index = this.newAssets.findIndex(item => item.newKey === key);
-      if (index !== -1) this.newAssets.splice(index, 1);
+      this.newAssets = this.newAssets.filter(item => item.newKey !== key);
     }
   },
   watch: {

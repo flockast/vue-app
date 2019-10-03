@@ -78,15 +78,22 @@ export default {
       let keys = Object.keys(this.localAsset.values);
       for (let i = 0; i < keys.length; i++) {
         const param = this.template.params.find(item => item.id === keys[i]);
-        if (this.localAsset.values[keys[i]] === '') this.localAsset.values[keys[i]] = undefined;
+        this.localAsset.values[keys[i]] = this.localAsset.values[keys[i]] || undefined;
         if (param.type.type === 'list') {
           // check like a object
           if (JSON.stringify(this.localAsset.values[keys[i]]) !== JSON.stringify(this.asset.values[keys[i]])) {
             this.isEdited = true;
             return;
           }
+        } if (param.type.type === 'boolean') {
+          // check like a boolean
+          if (this.localAsset.values[keys[i]] !== this.asset.values[keys[i]]) {
+            this.isEdited = true;
+            return;
+          }
+          this.localAsset.values[keys[i]] = this.localAsset.values[keys[i]] || false;
         } else {
-          // check others types (number, string, boolean)
+          // check others types (number, string)
           if (String(this.localAsset.values[keys[i]]) !== String(this.asset.values[keys[i]])) {
             this.isEdited = true;
             return;
