@@ -15,21 +15,23 @@
       </td>
       <td>{{ asset.id }}</td>
       <td v-for="(param, index) in template.params" :key="index">
-        <div v-if="param.type.type === 'boolean'" class="checkbox checkbox--readonly">
-          <input type="checkbox" class="checkbox__input" :checked="asset.values[param.id]" readonly onclick="return false;">
-          <div class="checkbox__control"></div>
-        </div>
-        <span v-else-if="param.type.type === 'link'">
-          {{
-            getTitleByLinkAsset (
-              linkAssets.find(
-                item => item.templateId === param.type.linkId && item.id === asset.values[param.id]
+        <div v-if="asset.values[param.id]">
+          <div v-if="param.type.type === 'boolean'" class="checkbox checkbox--readonly">
+            <input type="checkbox" class="checkbox__input" :checked="asset.values[param.id]" readonly onclick="return false;">
+            <div class="checkbox__control"></div>
+          </div>
+          <span v-else-if="param.type.type === 'link'">
+            {{
+              getTitleByLinkAsset (
+                linkAssets.find(
+                  item => item.templateId === param.type.linkId && item.id === asset.values[param.id]
+                )
               )
-            )
-          }}
-        </span>
-        <span v-else-if="param.type.type === 'list'">list</span>
-        <input v-else :value="asset.values[param.id]" class="input input--readonly" readonly/>
+            }}
+          </span>
+          <span v-else-if="param.type.type === 'list'">list</span>
+          <input v-else :value="asset.values[param.id]" class="input input--readonly" readonly/>
+        </div>
       </td>
     </tr>
     <tr v-if="isOpen" class="sub" :class="{'is-loading': isLoading}">
@@ -179,6 +181,7 @@ export default {
           } else {
             this.removeFromEditedValues(keys[i]);
           }
+          this.localAsset.values[keys[i]] = this.localAsset.values[keys[i]] || '';
         }
       }
     },
