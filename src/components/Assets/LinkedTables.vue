@@ -4,7 +4,6 @@
   </div>
   <div v-else>
     <div v-if="!this.isEmpty(this.linkedAssets)">
-      <div class="title title--sm">Связанные таблицы:</div>
       <LinkedTable v-for="linked in this.linkedAssets.data"
                    :template="linked.template"
                    :param-id="linked.paramId"

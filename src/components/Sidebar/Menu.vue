@@ -94,6 +94,9 @@ export default {
   text-decoration: none;
   color: $color-font-grey;
   cursor: pointer;
+  &:hover {
+    text-decoration: none;
+  }
   &:before {
     content: '';
     position: absolute;

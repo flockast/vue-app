@@ -12,3 +12,11 @@ body {
   line-height: $line-height;
   color: $color-font-dark;
 }
+
+a {
+  color: $color-main-light;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}

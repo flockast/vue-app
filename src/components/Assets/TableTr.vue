@@ -15,23 +15,17 @@
       </td>
       <td>{{ asset.id }}</td>
       <td v-for="(param, index) in template.params" :key="index">
-        <div v-if="asset.values[param.id]">
-          <div v-if="param.type.type === 'boolean'" class="checkbox checkbox--readonly">
-            <input type="checkbox" class="checkbox__input" :checked="asset.values[param.id]" readonly onclick="return false;">
-            <div class="checkbox__control"></div>
-          </div>
-          <span v-else-if="param.type.type === 'link'">
-            {{
-              getTitleByLinkAsset (
-                linkAssets.find(
-                  item => item.templateId === param.type.linkId && item.id === asset.values[param.id]
-                )
-              )
-            }}
-          </span>
-          <span v-else-if="param.type.type === 'list'">list</span>
-          <input v-else :value="asset.values[param.id]" class="input input--readonly" readonly/>
+        <div v-if="param.type.type === 'boolean'" class="checkbox checkbox--readonly">
+          <input type="checkbox" class="checkbox__input" :checked="asset.values[param.id]" readonly onclick="return false;">
+          <div class="checkbox__control"></div>
         </div>
+        <input v-else-if="param.type.type === 'link'" :value="getTitleByLinkAsset (
+              linkAssets.find(
+                item => item.templateId === param.type.linkId && item.id === asset.values[param.id]
+              )
+            )" class="input input--readonly" readonly/>
+        <span v-else-if="param.type.type === 'list'">list</span>
+        <input v-else :value="asset.values[param.id]" class="input input--readonly" readonly/>
       </td>
     </tr>
     <tr v-if="isOpen" class="sub" :class="{'is-loading': isLoading}">
@@ -55,12 +49,12 @@
                   <div v-if="param.type.type === 'boolean'" class="checkbox">
                     <input type="checkbox" class="checkbox__input"
                            v-model="localAsset.values[param.id]"
-                           @change="handleChangeInput">
+                           @change="handleChangeInput(param.id)">
                     <div class="checkbox__control"></div>
                   </div>
                   <select v-else-if="param.type.type === 'link'" class="select select--full"
                           v-model="localAsset.values[param.id]"
-                          @change="handleChangeInput">
+                          @change="handleChangeInput(param.id)">
                     <option v-for="linkAsset in linkAssets.filter(item => item.templateId === param.type.linkId)"
                             :value="linkAsset.id"
                             :selected="asset.values[param.id] === linkAsset.id"
@@ -70,10 +64,10 @@
                   </select>
                   <textarea v-else-if="param.type.type === 'list'" class="input input--full"
                             v-model="localAsset.values[param.id]"
-                            @input="handleChangeInput"></textarea>
+                            @input="handleChangeInput(param.id)"></textarea>
                   <input v-else type="text" class="input input--full"
                          v-model="localAsset.values[param.id]"
-                         @input="handleChangeInput">
+                         @input="handleChangeInput(param.id)">
                 </td>
               </tr>
               <tr>
@@ -153,36 +147,33 @@ export default {
     toggleSub () {
       this.isOpen = !this.isOpen;
     },
-    handleChangeInput () {
-      const keys = Object.keys(this.localAsset.values);
-      for (let i = 0; i < keys.length; i++) {
-        const param = this.template.params.find(item => item.id === keys[i]);
-        // reset for empty values
-        this.localAsset.values[keys[i]] = this.localAsset.values[keys[i]] || undefined;
-        if (param.type.type === 'list') {
-          // check like a object
-          if (this.localAsset.values[keys[i]] !== JSON.stringify(this.asset.values[keys[i]])) {
-            this.addToEditedValues(keys[i]);
-          } else {
-            this.removeFromEditedValues(keys[i]);
-          }
-        } else if (param.type.type === 'boolean') {
-          // check like a boolean
-          if (this.localAsset.values[keys[i]] !== this.asset.values[keys[i]]) {
-            this.addToEditedValues(keys[i]);
-          } else {
-            this.removeFromEditedValues(keys[i]);
-          }
-          this.localAsset.values[keys[i]] = this.localAsset.values[keys[i]] || false;
+    handleChangeInput (paramId) {
+      const param = this.template.params.find(item => item.id === paramId);
+      // reset for empty value
+      this.localAsset.values[paramId] = this.localAsset.values[paramId] || undefined;
+      if (param.type.type === 'list') {
+        // check like a object
+        if (this.localAsset.values[paramId] !== JSON.stringify(this.asset.values[paramId])) {
+          this.addToEditedValues(paramId);
         } else {
-          // check others types (number, string)
-          if (String(this.localAsset.values[keys[i]]) !== String(this.asset.values[keys[i]])) {
-            this.addToEditedValues(keys[i]);
-          } else {
-            this.removeFromEditedValues(keys[i]);
-          }
-          this.localAsset.values[keys[i]] = this.localAsset.values[keys[i]] || '';
+          this.removeFromEditedValues(paramId);
         }
+      } else if (param.type.type === 'boolean') {
+        // check like a boolean
+        if (this.localAsset.values[paramId] !== this.asset.values[paramId]) {
+          this.addToEditedValues(paramId);
+        } else {
+          this.removeFromEditedValues(paramId);
+        }
+        this.localAsset.values[paramId] = this.localAsset.values[paramId] || false;
+      } else {
+        // check others types (number, string)
+        if (String(this.localAsset.values[paramId]) !== String(this.asset.values[paramId])) {
+          this.addToEditedValues(paramId);
+        } else {
+          this.removeFromEditedValues(paramId);
+        }
+        this.localAsset.values[paramId] = this.localAsset.values[paramId] || '';
       }
     },
     addToEditedValues (value) {

@@ -9,7 +9,7 @@
             <th v-for="(param, index) in template.params" :key="index">
               <span v-if="param.id === 'title'">
                 <div class="table-filter">
-                  <input type="text" class="input" placeholder="Фильтр по названию" v-model="filterQuery">
+                  <input type="text" class="input" :placeholder="param.title" v-model="filterQuery">
                 </div>
               </span>
               <span v-else>{{ param.title }}</span>

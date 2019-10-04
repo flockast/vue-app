@@ -5,7 +5,10 @@
         <tr>
           <th :colspan="this.params.length + 2">
             <div class="title title--sm">
-              «{{ template.title }}» [{{ paramId }} = {{ parentAssetId }}]
+              <router-link :to="{name: 'assets', params: {id: template.id}}"
+                           :exact="true">
+                {{ template.title }}
+              </router-link>
             </div>
           </th>
         </tr>
