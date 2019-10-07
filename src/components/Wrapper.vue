@@ -9,6 +9,9 @@
         <PageContent />
       </div>
     </div>
+    <div v-else>
+      Загрузка...
+    </div>
   </div>
 </template>
 
