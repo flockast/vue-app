@@ -5,18 +5,12 @@ Vue CMS
 You only need <b>node.js</b> pre-installed and you’re good to go.
 
 ## Setup
-```
-yarn install
-```
+`npm install` or  `yarn install`
 
 ## Development
 Compiles and hot-reloads for development<br>
-```
-yarn run serve
-```
+`npm run serve` or `yarn serve`
 
 ## Deployment
 Compiles and minifies for production<br>
-```
-yarn run build
-```
+`npm run build` or `yarn build`
